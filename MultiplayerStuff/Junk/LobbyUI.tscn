@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cqivvm6dk2esm"]
 
-[ext_resource type="Script" uid="uid://cm6nmq1q1wwly" path="res://MultiplayerStuff/lobby_ui.gd" id="1_2bwc0"]
+[ext_resource type="Script" uid="uid://cm6nmq1q1wwly" path="res://MultiplayerStuff/Junk/lobby_ui.gd" id="1_2bwc0"]
 
 [node name="LobbyUi" type="Control"]
 layout_mode = 3

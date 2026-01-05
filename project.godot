@@ -11,18 +11,31 @@ config_version=5
 [application]
 
 config/name="GDCShoot"
-run/main_scene="uid://cqivvm6dk2esm"
+run/main_scene="uid://d3a6djfre3wqt"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Director="*res://Misc/director.gd"
-MultiplayerDirector="*res://MultiplayerStuff/MultiplayerDirector.gd"
 
 [display]
 
 window/stretch/mode="viewport"
+
+[editor]
+
+run/main_run_args="--server"
+
+[file_customization]
+
+folder_colors={
+"res://Maps/": "teal",
+"res://Misc/": "gray",
+"res://MultiplayerStuff/": "green",
+"res://Player Conrollers/": "blue",
+"res://PrototypeAssets/": "gray"
+}
 
 [input]
 

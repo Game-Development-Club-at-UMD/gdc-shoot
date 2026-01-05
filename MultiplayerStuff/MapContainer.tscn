@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtib8ppqweogq"]
+
+[ext_resource type="Script" uid="uid://bt8mw0x7olnpa" path="res://MultiplayerStuff/map_container.gd" id="1_mv773"]
+
+[node name="MapContainer" type="Node"]
+script = ExtResource("1_mv773")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("..")
+spawn_limit = 1

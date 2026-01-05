@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3a6djfre3wqt"]
+
+[ext_resource type="Script" uid="uid://b4lw6kpyphp8r" path="res://MultiplayerStuff/network_director.gd" id="1_ubnqp"]
+[ext_resource type="PackedScene" uid="uid://dtib8ppqweogq" path="res://MultiplayerStuff/MapContainer.tscn" id="2_qpoo3"]
+
+[node name="NetworkDirector" type="Node"]
+script = ExtResource("1_ubnqp")
+
+[node name="MapContainer" parent="." instance=ExtResource("2_qpoo3")]
+
+[node name="MultiplayerSpawner" parent="MapContainer" index="0"]
+_spawnable_scenes = PackedStringArray("uid://27dxcrv3ostv")
+
+[editable path="MapContainer"]
