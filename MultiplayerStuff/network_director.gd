@@ -1,5 +1,5 @@
 extends Node
-@onready var map_container: MapContainer = $MapContainer
+@onready var lobby_container: LobbyContainer = $LobbyContainer
 
 func _ready() -> void:
 	if OS.has_feature("server") or "--server" in OS.get_cmdline_args():
@@ -11,7 +11,7 @@ func _ready() -> void:
 func _setup_server():
 	get_window().position.x -= ceil(get_window().size.x / 2.0 + 8)
 	var server_logic = ServerLogic.new()
-	server_logic.map_container = map_container
+	server_logic.lobby_container = lobby_container
 	add_child(server_logic)
 
 func _setup_client():

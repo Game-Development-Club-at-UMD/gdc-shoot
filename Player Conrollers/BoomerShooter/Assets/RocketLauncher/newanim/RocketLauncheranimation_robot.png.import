@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cr5evop8tun54"
-path="res://.godot/imported/RocketLauncheranimation_robot.png-d1a811d4121b7c1a9c0c9db72de248ac.ctex"
+path.s3tc="res://.godot/imported/RocketLauncheranimation_robot.png-d1a811d4121b7c1a9c0c9db72de248ac.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "b1696d0d0284ec4e4a29b68dceded92b"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Player Conrollers/BoomerShooter/Assets/RocketLauncher/newanim/RocketLauncheranimation_robot.png"
-dest_files=["res://.godot/imported/RocketLauncheranimation_robot.png-d1a811d4121b7c1a9c0c9db72de248ac.ctex"]
+dest_files=["res://.godot/imported/RocketLauncheranimation_robot.png-d1a811d4121b7c1a9c0c9db72de248ac.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

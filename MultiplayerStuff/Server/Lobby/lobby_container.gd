@@ -1,6 +1,7 @@
 extends Node
-class_name MapContainer
+class_name LobbyContainer
 
+#might have to have a bool, if match started then always spawn the map if not there, this is so people late to joining gets synced up
 @rpc('any_peer', "call_local")
 func create_new_lobby(lobby_id: String):
 	if !multiplayer.is_server():
@@ -12,3 +13,4 @@ func create_new_lobby(lobby_id: String):
 	
 	lobby_instance.name = str(lobby_id)
 	add_child(lobby_instance, true)
+	
