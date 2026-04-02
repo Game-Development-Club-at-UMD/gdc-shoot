@@ -16,18 +16,6 @@ var speed = 1
 @export var input : Vector2
 var do_jump = false
 
-
-func _enter_tree():
-	# Set the authority based on the Node name (which is "1", "2", etc.)
-	# This ensures both Server and Client agree on who owns this node immediately.
-	set_multiplayer_authority(str(name).to_int())
-
-func _ready() -> void:
-	if is_multiplayer_authority():
-		$Camera3D.make_current()
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		input_synchronizer.set_multiplayer_authority(str(name).to_int())
-	
 func _physics_process(delta: float) -> void:
 	if is_multiplayer_authority():
 		$UI/Velocity.text = str(snapped((velocity.length()), 0.01))

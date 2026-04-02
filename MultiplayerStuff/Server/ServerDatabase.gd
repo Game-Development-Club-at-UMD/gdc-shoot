@@ -7,7 +7,7 @@ extends Node
 signal server_maps_updated #TODO
 signal lobbies_updated 
 
-var Players : Dictionary [int, Dictionary] 
+var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
 var Maps : Dictionary [String, PackedScene] = {} #DNS (does not sync atm)
 var Mercs : Dictionary [String, PackedScene] = {} #DNS
 var Characters : Dictionary [String, PackedScene] = {} #DNS

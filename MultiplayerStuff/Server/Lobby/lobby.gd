@@ -3,7 +3,6 @@ class_name Lobby
 
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
 
-var lobby_id : int
 var players_ids : Array[int]
 
 var current_map : Map
@@ -28,7 +27,8 @@ func change_map(map : String): #maps hold gamemodes #<1>
 	if current_map: current_map.queue_free()
 	
 	var new_map : Map = ServerDatabase.Maps[map].instantiate()
-	new_map.name = str(lobby_id)
+	new_map.name = name
+	
 	add_child(new_map)
 	current_map = new_map
 	

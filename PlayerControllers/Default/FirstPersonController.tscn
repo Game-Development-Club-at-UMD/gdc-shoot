@@ -50,9 +50,10 @@ properties/1/path = NodePath(".:position")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=728258314]
+[node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera")]
 collision_layer = 0
 script = ExtResource("1_sjy6i")
+camera = NodePath("Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
 shape = SubResource("CapsuleShape3D_lwjk5")

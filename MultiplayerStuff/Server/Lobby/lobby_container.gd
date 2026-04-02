@@ -5,6 +5,7 @@ const LOBBY = preload("res://MultiplayerStuff/Server/Lobby/Lobby.tscn")
 
 #RUNS ONLY ON SERVER
 var lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
+@onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 #might have to have a bool, if match started then always spawn the map if not there, this is so people late to joining gets synced up
 #@rpc('any_peer', "call_local")
@@ -20,7 +21,7 @@ var lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 	#add_child(lobby_scene, true)
 
 func _ready():
-	$MultiplayerSpawner.spawn_function = _custom_lobby_spawn
+	multiplayer_spawner.spawn_function = _custom_lobby_spawn
 
 # The server calls this to build the lobby package
 @rpc("any_peer", "call_remote", "reliable")
@@ -30,7 +31,7 @@ func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 		
 		lobbies[lobby_id] = players_in_lobby
 		ServerDatabase.update_lobbies(lobbies)
-		$MultiplayerSpawner.spawn(data)
+		multiplayer_spawner.spawn(data)
 	
 # This runs on EVERY machine when the lobby spawns
 func _custom_lobby_spawn(data: Dictionary) -> Node:
@@ -49,9 +50,8 @@ func _custom_lobby_spawn(data: Dictionary) -> Node:
 
 @rpc("any_peer","call_remote",'reliable')
 func add_player_to_lobby(lobby_id : String, player_id : int):
-
+	
 	if !multiplayer.is_server():
-
 		add_player_to_lobby.rpc_id(1, lobby_id, player_id)
 		return
 
