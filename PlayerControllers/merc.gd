@@ -7,11 +7,9 @@
 
 @export_group("Universal Properties")
 @export var health :float = 100.0
-@export var jump_strength = 2
 @export var gravity = 9.8
 @export var friction = .1
 @export var air_acceleration = .3
-@export var jump_buffer = .1
 @export var speed = 1
 #Vector 3 velocity
 #Vector 3 Position
@@ -30,7 +28,6 @@ func _ready() -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		get_tree().physics_frame.connect(check_abilities)
 		custom_ready()
-var do_jump : bool = false
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -41,18 +38,7 @@ func _physics_process(delta: float) -> void:
 	input.y = float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W))
 	input = input.normalized()
 	
-	if Input.is_physical_key_pressed(KEY_SPACE):
-		do_jump = true
-
-	# 3. PHYSICS & MOVEMENT
-	
-	
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y) * speed
-	jump_buffer -= delta
-	
-	if do_jump: 
-		do_jump = false
-		jump_buffer = .1
 	
 	if is_on_floor():
 		var current_friction: Vector2 = Vector2(velocity.x, velocity.z).rotated(PI) * friction
@@ -60,9 +46,6 @@ func _physics_process(delta: float) -> void:
 		velocity += Vector3(current_friction.x, 0, current_friction.y)
 		velocity += Vector3(movement_dir.x, 0, movement_dir.z)
 		
-		if jump_buffer >= 0:
-			velocity.y += jump_strength
-			jump_buffer = -1.0 #dont fly infinite
 	else:
 		if is_on_wall(): 
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5) 

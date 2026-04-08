@@ -34,7 +34,7 @@ folder_colors={
 "res://MultiplayerStuff/": "green",
 "res://PlayerControllers/": "blue",
 "res://PlayerControllers/Abilities/": "purple",
-"res://PlayerControllers/Abilities/AbilityBasePlates/": "purple",
+"res://PlayerControllers/Abilities/AbilityBasePlates/": "gray",
 "res://PlayerControllers/Mercs/": "blue",
 "res://PrototypeAssets/": "gray"
 }
