@@ -15,5 +15,4 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connection_success)
 	
 func _on_connection_success():
-	
 	print('Yay! we are connected to server yayyy :D')

@@ -1,6 +1,7 @@
 @abstract
 class_name Map extends Node3D
-@export var player_spawner : MultiplayerSpawner
+var player_spawner : MultiplayerSpawner
+
 
 #implementspawnpoint system and gamemode system
 #create a trello of what we need to do and a general flow chart
@@ -8,6 +9,12 @@ class_name Map extends Node3D
 var player_data_base : Dictionary[int, Dictionary] #playerid -> data(gametag, etc.)
 
 func _ready() -> void:#<ALL>
+	
+	player_spawner = MultiplayerSpawner.new()
+	add_child(player_spawner)
+	player_spawner.spawn_path = get_path()
+	player_spawner.spawn_limit = 58
+	
 	player_spawner.spawn_function = _spawn_player
 	register_players()
 	
@@ -16,8 +23,12 @@ func _ready() -> void:#<ALL>
 		parent_lobby.player_joined_lobby.connect(_on_player_joined)
 		parent_lobby.player_left_lobby.connect(_on_player_left)
 	
+	custom_ready()
 	if !multiplayer.is_server(): return
 	start_gamemode()
+
+func _process(delta: float) -> void:
+	custom_process(delta)
 
 func _game_ended(): #<1>
 	if !multiplayer.is_server(): return
@@ -57,3 +68,6 @@ func player_died(merc : Merc)
 @abstract func _on_player_joined(player_id: int)
 	
 @abstract func _on_player_left(player_id: int)
+
+@abstract func custom_ready()
+@abstract func custom_process(delta : float)

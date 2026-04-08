@@ -34,13 +34,13 @@ grow_vertical = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="LobbyViewer/Panel" unique_id=1985447984]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.157
 offset_left = 313.0
 offset_top = 13.0
 offset_right = -302.0
-offset_bottom = -494.0
+offset_bottom = -0.0020065308
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/normal_font_size = 52
@@ -67,13 +67,14 @@ size_flags_vertical = 3
 
 [node name="create_lobby_button" type="Button" parent="LobbyViewer/Panel" unique_id=742597945]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
+anchor_left = 0.703
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 807.0
+anchor_bottom = 0.17
+offset_left = 37.214966
 offset_top = 25.0
 offset_right = -24.0
-offset_bottom = -521.0
+offset_bottom = -34.620003
 grow_horizontal = 2
 grow_vertical = 2
 text = "create_lobby"

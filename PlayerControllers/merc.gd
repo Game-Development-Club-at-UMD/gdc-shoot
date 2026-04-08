@@ -69,6 +69,7 @@ func _physics_process(delta: float) -> void:
 		sv_airaccelerate(movement_dir, delta)
 
 	velocity.y -= gravity * delta
+	custom_process(delta)
 	move_and_slide()
 
 func sv_airaccelerate(movement_dir, delta):

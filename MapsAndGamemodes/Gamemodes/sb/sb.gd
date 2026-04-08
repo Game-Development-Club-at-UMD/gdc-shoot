@@ -1,13 +1,21 @@
 extends Map
 class_name SB
 #sandbox
+const SANDBOX_LEADERBOARD_UI = preload("res://MapsAndGamemodes/Gamemodes/sb/SandboxLeaderboardUI.tscn")
+
+var sandbox_leaderboard
 
 @export var player_spawn : Node3D
 @export var respawn_delay : float = 5.0 # How long they wait in seconds
 
 var player_stats : Dictionary[int, Dictionary]
 
-func _process(delta: float) -> void:
+func custom_ready():
+	sandbox_leaderboard = SANDBOX_LEADERBOARD_UI.instantiate()
+	add_child(sandbox_leaderboard)
+	
+
+func custom_process(delta : float):
 	# 1. Only the server manages respawns
 	if !multiplayer.is_server(): return
 	
@@ -39,7 +47,7 @@ func player_died(merc : Merc):
 		player_stats[player_id]["is_dead"] = true
 		player_stats[player_id]["respawn_timer"] = respawn_delay
 		player_stats[player_id]["deaths"] += 1 
-		
+		sync_player_stats.rpc(player_stats)
 	merc.queue_free()
 
 func _respawn_player(player_id: int):
@@ -54,7 +62,8 @@ func _respawn_player(player_id: int):
 			"peer_id": player_id
 		})
 		print("Player ", player_id, " respawned!")
-
+		sync_player_stats.rpc(player_stats)
+	
 func _on_player_joined(player_id: int) -> void:
 	if !multiplayer.is_server(): return
 	
@@ -69,6 +78,7 @@ func _on_player_joined(player_id: int) -> void:
 	
 	if not has_node(str(player_id)):
 		player_spawner.spawn({"merc_type" = "default", "position" = Vector3.ZERO, "peer_id" = player_id})
+	sync_player_stats.rpc(player_stats)
 
 func _on_player_left(player_id: int) -> void:
 	if !multiplayer.is_server(): return
@@ -80,3 +90,13 @@ func _on_player_left(player_id: int) -> void:
 	var merc_node = get_node_or_null(str(player_id))
 	if merc_node:
 		merc_node.queue_free()
+	sync_player_stats.rpc(player_stats)
+
+# Add this anywhere in SB.gd
+@rpc("authority", "call_local", "reliable")
+func sync_player_stats(new_stats: Dictionary) -> void:
+	player_stats = new_stats
+	
+	# Push the fresh data to the UI!
+	if sandbox_leaderboard and sandbox_leaderboard.has_method("update_ui"):
+		sandbox_leaderboard.update_ui(player_stats)
