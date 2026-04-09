@@ -13,8 +13,10 @@ var abilites_ui : AbilitiesUI
 @export var friction = .1
 @export var air_acceleration = .3
 @export var speed = 1
-#Vector 3 velocity
-#Vector 3 Position
+
+
+var target_position: Vector3 #what other people see
+var target_rotation: Vector3
 
 
 @export var abilities : Array[Ability]
@@ -24,8 +26,14 @@ var dead = false
 var ability_ui 
 signal died(_self) #Server will disable input on character
 signal took_damage
-#do prediction
+
+
 func _ready() -> void:
+	target_position = global_position
+	target_rotation = global_rotation
+	
+	_setup_synchronizer()
+	
 	if is_multiplayer_authority():
 		camera.make_current()
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -35,9 +43,47 @@ func _ready() -> void:
 		add_child(abilites_ui)
 		abilites_ui.generate_ui(self)
 
+func _setup_synchronizer() -> void:
+	var synchronizer = MultiplayerSynchronizer.new()
+	synchronizer.name = "MercSynchronizer" # Naming it helps prevent pathing desyncs
+	
+	var config = SceneReplicationConfig.new()
+	
+	# --- ON CHANGE PROPERTIES (Zero Bandwidth Cost unless modified) ---
+	var static_props = [":health", ":gravity", ":friction", ":air_acceleration", ":speed"]
+	for prop in static_props:
+		var path = NodePath(prop)
+		config.add_property(path)
+		# Only send a packet if the value actually changes
+		config.property_set_replication_mode(path, SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
+	
+	## --- ALWAYS PROPERTIES (Costs bandwidth, required for standard multiplayer) ---
+	#var dynamic_props = [":position", ":rotation"]
+	#for prop in dynamic_props:
+		#var path = NodePath(prop)
+		#config.add_property(path)
+		## Send a packet every network tick
+		#config.property_set_replication_mode(path, SceneReplicationConfig.REPLICATION_MODE_ALWAYS)
+	#
+	synchronizer.replication_config = config
+	add_child(synchronizer)
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
-		return
+		# --- THE LERPING MAGIC ---
+		# 15 is the "lerp speed". Higher = snappier, Lower = smoother but delayed.
+		var lerp_speed = 15.0 * delta
+		
+		# Smoothly slide the position
+		global_position = global_position.lerp(target_position, lerp_speed)
+		
+		# Smoothly rotate. We use lerp_angle instead of normal lerp!
+		# Normal lerp will cause a crazy "spin of death" when going from 359 degrees back to 0.
+		global_rotation.x = lerp_angle(global_rotation.x, target_rotation.x, lerp_speed)
+		global_rotation.y = lerp_angle(global_rotation.y, target_rotation.y, lerp_speed)
+		global_rotation.z = lerp_angle(global_rotation.z, target_rotation.z, lerp_speed)
+		
+		return # Skip all the local movement code below
 	
 	var input = Vector2.ZERO
 	input.x = float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A))
@@ -60,6 +106,8 @@ func _physics_process(delta: float) -> void:
 	velocity.y -= gravity * delta
 	custom_process(delta)
 	move_and_slide()
+	if is_multiplayer_authority():
+		receive_pos_from_server.rpc(global_position, global_rotation)
 
 func sv_airaccelerate(movement_dir, delta):
 	var air_strength = 3
@@ -108,6 +156,12 @@ func add_ability(ability : Ability):
 
 func remove_ability(ability: Ability):
 	pass
+
+@rpc("any_peer", "call_remote", "unreliable")
+func receive_pos_from_server(pos: Vector3, rot: Vector3):
+	# Don't move them yet! Just update the target.
+	target_position = pos
+	target_rotation = rot
 
 @rpc("any_peer","call_remote", 'reliable')
 func take_damage(damage):

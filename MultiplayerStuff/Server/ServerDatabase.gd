@@ -9,7 +9,6 @@ signal server_maps_updated #TODO
 signal players_updated
 signal lobbies_updated 
 
-
 var Maps : Dictionary [String, PackedScene] = {} #DNS (does not sync atm)
 var Mercs : Dictionary [String, PackedScene] = {} #DNS
 var Characters : Dictionary [String, PackedScene] = {} #DNS
@@ -17,7 +16,8 @@ var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
 var Lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 
 var port = 6789
-var address = "10.140.44.20"
+var address = "localhost"
+#var address = "csdev03.d.umn.edu"
 #var chat 
 #endregion
 
