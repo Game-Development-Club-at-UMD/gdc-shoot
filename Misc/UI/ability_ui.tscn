@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://clw5rx8qgj0b"]
+
+[ext_resource type="Script" uid="uid://dyognhe7e8mjc" path="res://Misc/UI/ability_ui.gd" id="1_3qame"]
+
+[node name="AbilityUI" type="Control" unique_id=383647792]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_3qame")
+
+[node name="Panel" type="Panel" parent="." unique_id=1958362995]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 21.0
+offset_right = -25.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=1866882278]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2

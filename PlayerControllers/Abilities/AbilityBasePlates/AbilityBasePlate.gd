@@ -6,7 +6,7 @@ var currently_active = false
 
 @export_category("Ability Mapping")
 @export_enum(
-	"None",
+	"Passive",
 	# --- LETTERS ---
 	"E", "Q", "F",
 	"G", "H", "V", "B", "N", "M", "T", "Y", "X", "C", "Z",
@@ -16,4 +16,4 @@ var currently_active = false
 	"Shift", "Ctrl", "Alt", "Space", "CapsLock", "Enter",
 	# --- UI & MISC ---
 	"F1", "F2", "F3", "F4", "F5", "F6", "F12"
-) var trigger_key: String = "None"
+) var trigger_key: String = "Passive"

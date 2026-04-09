@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cqmhmo5ravo2"]
+
+[node name="AbilitySlotUI" type="HBoxContainer" unique_id=2101179654]
+size_flags_vertical = 3
+
+[node name="Ability" type="RichTextLabel" parent="." unique_id=1339439638]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "AbilityName"
+
+[node name="Key" type="RichTextLabel" parent="." unique_id=1583288344]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[center]key"

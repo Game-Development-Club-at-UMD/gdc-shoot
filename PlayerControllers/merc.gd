@@ -1,6 +1,8 @@
 @abstract class_name Merc extends CharacterBody3D
 
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
+const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
+var abilites_ui : AbilitiesUI
 
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
@@ -14,20 +16,24 @@
 #Vector 3 velocity
 #Vector 3 Position
 
+
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
 
 var dead = false
-
+var ability_ui 
 signal died(_self) #Server will disable input on character
 signal took_damage
-
+#do prediction
 func _ready() -> void:
 	if is_multiplayer_authority():
 		camera.make_current()
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		get_tree().physics_frame.connect(check_abilities)
 		custom_ready()
+		abilites_ui = ABILITY_UI.instantiate()
+		add_child(abilites_ui)
+		abilites_ui.generate_ui(self)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -45,7 +51,7 @@ func _physics_process(delta: float) -> void:
 		var friction_dir = transform.basis * Vector3(current_friction.x, 0, current_friction.y)
 		velocity += Vector3(current_friction.x, 0, current_friction.y)
 		velocity += Vector3(movement_dir.x, 0, movement_dir.z)
-		
+	
 	else:
 		if is_on_wall(): 
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5) 
@@ -89,12 +95,19 @@ func check_abilities() -> void:
 		if !i.is_multiplayer_authority():
 			i.set_multiplayer_authority(int(name), true)
 		
-		# Convert key to the integer keycode (e.g. Q -> 81)
-		var key_code = OS.find_keycode_from_string(i.trigger_key)
-		
-		# Finally, check the hardware state
-		if Input.is_physical_key_pressed(key_code):
-			i.activate(abilities, self)
+		if i.trigger_key != 'Passive':
+			# Convert key to the integer keycode (e.g. Q -> 81)
+			var key_code = OS.find_keycode_from_string(i.trigger_key)
+			
+			# Finally, check the hardware state
+			if Input.is_physical_key_pressed(key_code):
+				i.activate(abilities, self)
+
+func add_ability(ability : Ability):
+	pass
+
+func remove_ability(ability: Ability):
+	pass
 
 @rpc("any_peer","call_remote", 'reliable')
 func take_damage(damage):
