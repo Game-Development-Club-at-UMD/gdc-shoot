@@ -23,7 +23,7 @@ func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 		lobbies[lobby_id] = players_in_lobby
 		ServerDatabase.update_lobbies(lobbies)
 		multiplayer_spawner.spawn(data)
-	
+
 # This runs on EVERY machine when the lobby spawns
 func _custom_lobby_spawn(data: Dictionary) -> Node:
 	var lobby_scene: Lobby = LOBBY.instantiate()

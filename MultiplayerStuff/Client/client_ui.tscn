@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://wv5shiqbwe6w"]
+
+[ext_resource type="Script" uid="uid://citp50pf2ul2s" path="res://MultiplayerStuff/Client/client_ui.gd" id="1_erp88"]
+[ext_resource type="Script" uid="uid://bwv3skhkt52ki" path="res://MultiplayerStuff/Client/menu_ui.gd" id="2_c7bsp"]
+[ext_resource type="Script" uid="uid://c8i0a53aap31q" path="res://MultiplayerStuff/Client/chat.gd" id="3_ty0e6"]
+
+[node name="ClientUI" type="Control" unique_id=198181679]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_erp88")
+
+[node name="Menu" type="Control" parent="." unique_id=200471528]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_c7bsp")
+
+[node name="Panel" type="Panel" parent="Menu" unique_id=806910686]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = 30.0
+offset_right = -22.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LobbyStatus" type="Panel" parent="Menu/Panel" unique_id=1931961666]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.786
+anchor_right = 1.0
+anchor_bottom = 0.66300005
+offset_left = 23.255981
+offset_top = 10.0
+offset_right = -13.0
+offset_bottom = -14.496033
+
+[node name="Current" type="RichTextLabel" parent="Menu/Panel/LobbyStatus" unique_id=2119815128]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 13.0
+offset_right = 167.0
+offset_bottom = 85.0
+text = "Current Lobby
+
+\"Lobby Name\""
+
+[node name="LeaveLobby" type="Button" parent="Menu/Panel/LobbyStatus" unique_id=442225035]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 300.0
+offset_right = 185.0
+offset_bottom = 332.0
+text = "Leave Lobby"
+
+[node name="Chat" type="Control" parent="." unique_id=1833918700]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_ty0e6")
+
+[connection signal="pressed" from="Menu/Panel/LobbyStatus/LeaveLobby" to="Menu" method="_on_leave_lobby_pressed"]

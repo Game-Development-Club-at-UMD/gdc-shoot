@@ -9,9 +9,16 @@ signal server_maps_updated #TODO
 signal players_updated
 signal lobbies_updated 
 
-var Maps : Dictionary [String, PackedScene] = {} #DNS (does not sync atm)
-var Mercs : Dictionary [String, PackedScene] = {} #DNS
-var Characters : Dictionary [String, PackedScene] = {} #DNS
+var Maps : Dictionary [String, PackedScene] = {
+	"sb_lobby" = load("res://MapsAndGamemodes/Maps/sb_Lobby/sb_lobby.tscn"),
+	"hm_home" = load("res://MultiplayerStuff/home -._-/hm_home.tscn")
+} 
+
+var Mercs : Dictionary [String, PackedScene] = {
+	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn")
+} 
+
+var Characters : Dictionary [String, PackedScene] = {} 
 var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
 var Lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 
@@ -21,35 +28,20 @@ var address = "localhost"
 #var chat 
 #endregion
 
-#region PRESET DATABASE
-var PRESETMAPS : Dictionary [String, PackedScene] = {
-	"lobby" = load("res://MapsAndGamemodes/Maps/sb_Lobby/sb_lobby.tscn")
-}
-
-var PRESETMERCS : Dictionary [String, PackedScene] = {
-	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn")
-}
-
-const TRIGGER_KEYS = [
-	"None", "E", "Q", "F", "R", "G", "H", "V", "B", "N", "M", "T", "Y", "X", 
-	"C", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Shift", 
-	"Ctrl", "Alt", "Space", "Tab", "CapsLock", "Enter", 
-	"F1", "F2", "F3", "F4", "F5", "F6", "F12"
-]
-
-#endregion
-
 #region Manager
 func add_player(peer_id : int): 
 	Players[peer_id] = {}
 	rpc("sync_players", Players)
+
 func remove_player(peer_id : int):
 	Players.erase(peer_id)
 	rpc("sync_players", Players)
+
 @rpc("authority","call_remote","reliable")
 func sync_players(_players):
 	Players = _players
 	players_updated.emit()
+
 
 func update_lobbies(_lobbies):
 	rpc("sync_lobbies", _lobbies)
@@ -63,8 +55,6 @@ func sync_lobbies(_lobbies):
 #endregion
 
 func _ready() -> void:
-	Maps = PRESETMAPS
-	Mercs = PRESETMERCS
 	if !multiplayer.is_server(): return
 	multiplayer.peer_connected.connect(_on_client_connected)
 

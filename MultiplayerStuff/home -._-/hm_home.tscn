@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bjteah7l71st2"]
+
+[ext_resource type="Script" uid="uid://bv5f1vtm3y4ax" path="res://MultiplayerStuff/home -._-/hm_home.gd" id="1_cb1aq"]
+[ext_resource type="Texture2D" uid="uid://b7b8tego25aq3" path="res://PrototypeAssets/PrototypeMapAssets/Vector/texture_02.svg" id="2_vnwpo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qt646"]
+albedo_texture = ExtResource("2_vnwpo")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qt646"]
+
+[sub_resource type="Sky" id="Sky_firbl"]
+sky_material = SubResource("ProceduralSkyMaterial_qt646")
+
+[sub_resource type="Environment" id="Environment_n31ts"]
+background_mode = 2
+background_energy_multiplier = 1.07
+sky = SubResource("Sky_firbl")
+ambient_light_color = Color(0.63375676, 0.6337568, 0.63375676, 1)
+
+[node name="Lobby" type="Node3D" unique_id=678425904]
+script = ExtResource("1_cb1aq")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1588121579]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.523632, -1.8967204, 1.4092712)
+material_override = SubResource("StandardMaterial3D_qt646")
+use_collision = true
+size = Vector3(54.756798, 1, 58.8974)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=534643691]
+environment = SubResource("Environment_n31ts")
+
+[node name="PlayerSpawner" type="Marker3D" parent="." unique_id=2128248748]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3790727, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=937780086]
+transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, -17.34317, 34.01458, 34.429657)
