@@ -6,17 +6,17 @@ class_name Map extends Node3D
 
 signal map_ready # The signal the Lobby is waiting for
 
-var player_spawner : MultiplayerSpawner
+@export var player_spawner : MultiplayerSpawner
 var player_data_base : Dictionary[int, Dictionary]
 var is_map_ready : bool = false # Lobby checks this for mid-game joiners
 
 func _ready() -> void:
-	player_spawner = MultiplayerSpawner.new()
-	player_spawner.name = "player_spawner"
-	add_child(player_spawner)
+	#player_spawner = MultiplayerSpawner.new()
+	#player_spawner.name = "player_spawner"
+	#add_child(player_spawner)
 	
-	player_spawner.spawn_path = get_path()
-	player_spawner.spawn_limit = 58
+	#player_spawner.spawn_path = get_path()
+	#player_spawner.spawn_limit = 58
 	
 	player_spawner.spawn_function = _spawn_player
 	register_players()
