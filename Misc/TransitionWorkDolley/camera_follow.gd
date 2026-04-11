@@ -27,7 +27,7 @@ func ease_dolley(duration: float):
 		printerr("🚨 ERROR: path_follow_3d is null! Check your node paths.")
 		done_dolley.emit()
 		return
-		
+	
 	# Kill any existing tweens on this node to prevent conflicts
 	var tween = create_tween()
 	
