@@ -38,7 +38,7 @@ func change_map(map_name : String):
 		# Disconnect signals so late-joiners aren't routed to a dying map
 		player_joined_lobby.disconnect(current_map._on_player_joined)
 		player_left_lobby.disconnect(current_map._on_player_left)
-		remove_child(current_map)
+		remove_child(current_map) #makes sure naming problems dont happen
 		current_map.queue_free()
 		current_map = null # Explicitly nullify it so it instantly fails 'if current_map' checks
 	
