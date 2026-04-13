@@ -4,6 +4,7 @@ extends Node3D
 @export var tracer_width: float = 0.05
 @export var fade_duration: float = 0.15 # How fast it shrinks (seconds)
 
+@rpc("any_peer","call_local","unreliable")
 func _create_tracer_effect(global_start: Vector3, global_end: Vector3) -> void:
 	# If we shoot at a wall zero inches away, don't draw anything
 	var distance = global_start.distance_to(global_end)

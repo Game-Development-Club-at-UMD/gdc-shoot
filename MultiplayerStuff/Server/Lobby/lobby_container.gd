@@ -7,35 +7,60 @@ const LOBBY = preload("res://MultiplayerStuff/Server/Lobby/Lobby.tscn")
 var lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 @onready var lobby_changer_camera: LobbyChangerCamera = $LobbyChangerCamera
+@onready var map_dropdown: OptionButton = $LobbyViewer/Panel/OptionButton
+@onready var lobby_name_input: LineEdit = $LobbyViewer/Panel/LobbyName
 
 #might have to have a bool, if match started then always spawn the map if not there, this is so people late to joining gets synced up
 
 func _ready():
 	multiplayer_spawner.spawn_function = _custom_lobby_spawn
+	_setup_map_dropdown() # Add this line!
 	if !multiplayer.is_server(): return
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 
+func _setup_map_dropdown() -> void:
+	if map_dropdown == null: return 
+	
+	map_dropdown.clear() # Clear any default items in the inspector
+	
+	# Loop through all the keys in your global database
+	for map_key in ServerDatabase.Maps.keys():
+		if map_key == "hm_home":
+			continue # Skip the home map
+			
+		# Add the map name to the list
+		map_dropdown.add_item(map_key)
+
 @rpc("any_peer", "call_remote", "reliable")
-func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
+func create_new_lobby(desired_lobby_id: String, players_in_lobby: Array[int], selected_map : String):
 	if multiplayer.is_server():
 		# Grab the index on the server BEFORE adding the new lobby to the dictionary
+		var final_lobby_id = desired_lobby_id.validate_node_name()
+		var base_name = final_lobby_id
+		var name_suffix = 2
+		
+		# 2. If the name already exists, keep adding numbers until it's unique!
+		while lobbies.has(final_lobby_id):
+			final_lobby_id = base_name + "_" + str(name_suffix)
+			name_suffix += 1
+		
 		var current_index = lobbies.size() 
 		
 		# Pack the index into the data package!
 		var data = { 
-			"id": lobby_id, 
+			"id": final_lobby_id, 
 			"players": players_in_lobby,
-			"grid_index": current_index # <--- ADD THIS
+			"grid_index": current_index, # <--- ADD THIS
 		}
 		
-		lobbies[lobby_id] = players_in_lobby
+		lobbies[final_lobby_id] = players_in_lobby
 		ServerDatabase.update_lobbies(lobbies)
 		var lob : Lobby = multiplayer_spawner.spawn(data)
 		
 		if lobbies.size() == 1:
 			lob.call_deferred("change_map", "hm_home")
 		else:
-			lob.call_deferred("change_map", "td_dust2")
+			lob.call_deferred("change_map", selected_map)
 
 # This runs on EVERY machine when the lobby spawns
 func _custom_lobby_spawn(data: Dictionary) -> Node:
@@ -198,8 +223,17 @@ func wake_up_lobby(lobby_id: String): #wakey waky, its time for schoo
 func _on_create_lobby_button_pressed() -> void:
 	if !multiplayer.is_server():
 		var array_of_player :Array[int] = []
-		create_new_lobby.rpc_id(1, "server_lobby_" + str(randi_range(1,9999)), array_of_player)
-
+		
+		# Grab the string of the currently selected map
+		var selected_map = map_dropdown.get_item_text(map_dropdown.selected)
+		var desired_name = lobby_name_input.text.strip_edges()
+		
+		# Fallback if they left it blank
+		if desired_name == "":
+			desired_name = "Server_Lobby_" + str(randi_range(1000, 9999))
+		# You would then pass `selected_map` in your RPC to tell the server what to load
+		create_new_lobby.rpc_id(1, desired_name, array_of_player, selected_map)
+		
 func _on_player_disconnected(peer_id: int):
 	# Search our local lobbies dictionary to find where they were
 	for lobby_id in lobbies.keys():

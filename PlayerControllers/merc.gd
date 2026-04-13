@@ -302,12 +302,49 @@ func take_damage(damage: float):
 			
 	# Apply damage if they pass the check
 	health -= damage
+	
+	# TELL EVERYONE TO FLASH THIS PLAYER YELLOW
+	_sync_flash_damage.rpc() 
+	
 	if health <= 0 and not dead:
 		dead = true
 		death_effects.rpc()
 		die.rpc_id(1)
 	else:
 		emit_signal("took_damage")
+
+@rpc("authority", "call_local", "unreliable")
+func _sync_flash_damage() -> void:
+	if not visual_body: return
+	
+	# 1. Create a bright, unshaded yellow material
+# 1. Create a semi-transparent yellow material
+	var flash_mat = StandardMaterial3D.new()
+	# The 4th number (0.4) is the alpha/opacity. 0.0 is invisible, 1.0 is solid.
+	flash_mat.albedo_color = Color(1.0, 1.0, 0.0, 0.4) 
+	flash_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	flash_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA # Required for opacity to work
+	
+	# 2. Iterate through every single child inside the visual body
+	_apply_overlay_recursive(visual_body, flash_mat)
+	
+	# 3. Wait for the flash duration
+	await get_tree().create_timer(0.15).timeout
+	
+	# 4. Strip the overlay off everything
+	if is_instance_valid(visual_body):
+		_apply_overlay_recursive(visual_body, null)
+
+
+# --- The Recursive Search Function ---
+func _apply_overlay_recursive(current_node: Node, mat: Material) -> void:
+	# If the node can be rendered in 3D, apply the overlay
+	if current_node is GeometryInstance3D:
+		current_node.material_overlay = mat
+		
+	# Recursively call this exact function on all children of the current node
+	for child in current_node.get_children():
+		_apply_overlay_recursive(child, mat)
 
 @rpc("any_peer", "call_local")
 func death_effects():

@@ -43,13 +43,19 @@ func shoot():
 			if person_hit != null and person_hit is Merc:
 				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
 				#rpc_id(int(person_hit.name), person_hit.take_damage(damage))
-			tracer_effect._create_tracer_effect(tracer_effect.global_position, bullet_ray_cast.get_collision_point())
-
+			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, bullet_ray_cast.get_collision_point())
+	
 func equip():
 	show()
 	animation_player.play("equip")
+	show_visual_hand.rpc(true)
+
+@rpc("any_peer","call_remote","reliable")
+func show_visual_hand(vis : bool):
+	visual_hand.visible = vis
 	
 func dequip():
 	animation_player.play("dequip")
 	await animation_player.animation_finished
 	hide()
+	show_visual_hand.rpc(false)

@@ -16,7 +16,7 @@ script = ExtResource("1_sjy6i")
 camera = NodePath("Camera3D")
 visual_body = NodePath("MeshInstance3D")
 visual_hand = NodePath("Hand")
-abilities = [NodePath("EvilGun"), NodePath("JumpAbility"), NodePath("GrenadeAbility"), NodePath("SprintAbility")]
+abilities = [null, NodePath("JumpAbility"), NodePath("GrenadeAbility"), NodePath("SprintAbility")]
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_fheum")]
 AbilityDescription = "if you must go fast"
@@ -28,7 +28,7 @@ auto_bhop = true
 jump_strength = 5.0
 trigger_key = "Space"
 
-[node name="EvilGun" parent="." unique_id=697975385 instance=ExtResource("2_4fgnm")]
+[node name="EvilGun" parent="." unique_id=229358590 instance=ExtResource("2_4fgnm")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
 shape = SubResource("CapsuleShape3D_lwjk5")

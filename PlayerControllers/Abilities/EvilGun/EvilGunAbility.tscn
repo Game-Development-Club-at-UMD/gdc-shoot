@@ -52,7 +52,7 @@ trigger_key = "1"
 [node name="firstanimation" parent="." unique_id=1754485602 instance=ExtResource("2_57y61")]
 transform = Transform3D(-1.5954656e-08, 0, -0.365, 0, 0.365, 0, 0.365, 0, -1.5954656e-08, 0, -0.52469325, -1.76882)
 
-[node name="Skeleton3D" parent="firstanimation/Armature" parent_id_path=PackedInt32Array(1754485602, 1722798876) index="0" unique_id=892069068]
+[node name="Skeleton3D" parent="firstanimation/Armature" parent_id_path=PackedInt32Array(1754485602, 1082067935) index="0" unique_id=910992525]
 bones/0/position = Vector3(6.0834007, 0.1328843, 0.8187318)
 bones/0/rotation = Quaternion(0.021230225, 0.01821004, -0.009326542, 0.99956524)
 bones/1/position = Vector3(0.30517885, 1.5603468, 0.20145948)
