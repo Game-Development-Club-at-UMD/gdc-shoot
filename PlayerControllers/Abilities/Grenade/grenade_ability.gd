@@ -57,7 +57,6 @@ func explode():
 	# Everything below this runs locally for all clients (Visuals/Cleanup)
 	if cpu_particles_3d:
 		cpu_particles_3d.emitting = true
-		print('emitting')
 	
 	grenade.set_deferred("freeze", true)
 	
