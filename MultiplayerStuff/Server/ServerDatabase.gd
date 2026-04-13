@@ -16,12 +16,11 @@ var Maps : Dictionary [String, PackedScene] = {
 	"hm_home" = load("res://MultiplayerStuff/home -._-/hm_home.tscn"),
 	"dm_dust2" = load("res://MapsAndGamemodes/Maps/dm_dust2/dm_dust2.tscn"),
 	"dm_grahhh" = load("res://MapsAndGamemodes/Maps/dm_grahhh/dm_grahhh.tscn")
-} 
+}
 
 var Mercs : Dictionary [String, PackedScene] = {
 	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn"),
 	"homebody" = load("res://PlayerControllers/Mercs/HomeBody/HomeBody.tscn")
-	
 }
 
 var Characters : Dictionary [String, PackedScene] = {} 

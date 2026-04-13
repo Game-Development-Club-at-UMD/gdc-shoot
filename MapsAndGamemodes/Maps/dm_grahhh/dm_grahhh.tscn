@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://b6f7qj1sgit56"]
 
-[ext_resource type="ArrayMesh" uid="uid://lovi66rvmfh4" path="res://MapsAndGamemodes/Maps/blahhh.obj" id="1_jn0b5"]
 [ext_resource type="Script" uid="uid://bxmm6ls5h42h3" path="res://MapsAndGamemodes/Maps/dm_grahhh/dm_grahhh.gd" id="1_tb2g2"]
-[ext_resource type="Material" uid="uid://dgritohc571s4" path="res://MapsAndGamemodes/Maps/dm_grahhh/babybrain.tres" id="2_jn0b5"]
 [ext_resource type="Texture2D" uid="uid://dfjnkrm5u31yc" path="res://MapsAndGamemodes/Maps/dm_grahhh/textures/materials_skybox_nmb_space.tga" id="4_a6tkg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_a6tkg"]
@@ -107,21 +105,6 @@ mesh = SubResource("PrismMesh_0mc57")
 
 [node name="Blahhh" type="MeshInstance3D" parent="." unique_id=1452699060]
 transform = Transform3D(0.8918528, 0.45232576, 0, -0.45232576, 0.8918528, 0, 0, 0, 1, 3.3214626, 0.43162268, -2.4328306)
-mesh = ExtResource("1_jn0b5")
-surface_material_override/0 = ExtResource("2_jn0b5")
-surface_material_override/1 = ExtResource("2_jn0b5")
-surface_material_override/2 = ExtResource("2_jn0b5")
-surface_material_override/3 = ExtResource("2_jn0b5")
-surface_material_override/4 = ExtResource("2_jn0b5")
-surface_material_override/5 = ExtResource("2_jn0b5")
-surface_material_override/6 = ExtResource("2_jn0b5")
-surface_material_override/7 = ExtResource("2_jn0b5")
-surface_material_override/8 = ExtResource("2_jn0b5")
-surface_material_override/9 = ExtResource("2_jn0b5")
-surface_material_override/10 = ExtResource("2_jn0b5")
-surface_material_override/11 = ExtResource("2_jn0b5")
-surface_material_override/12 = ExtResource("2_jn0b5")
-surface_material_override/13 = ExtResource("2_jn0b5")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=537059405]
 
@@ -182,3 +165,6 @@ environment = SubResource("Environment_ltece")
 transform = Transform3D(0.98902106, -0.07131312, -0.12942897, 0.12962143, -0.0019420675, 0.99156165, -0.07096272, -0.9974521, 0.007322963, 2.3350253, 3.1600935, 0)
 light_energy = 0.395
 sky_mode = 1
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1653601159]
+transform = Transform3D(-0.09842508, 0.5668951, -0.81788903, 0.06773173, 0.82379, 0.5628344, 0.99283683, -2.2513694e-08, -0.11947838, -3.8825018, 5.040255, 0)
