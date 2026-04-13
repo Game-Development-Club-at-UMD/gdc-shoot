@@ -21,6 +21,7 @@ abilities = [NodePath("EvilGun"), NodePath("JumpAbility"), NodePath("GrenadeAbil
 
 [node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("2_lfvw0")]
 auto_bhop = true
+jump_strength = 5.0
 trigger_key = "Space"
 
 [node name="EvilGun" parent="." unique_id=697975385 instance=ExtResource("2_4fgnm")]

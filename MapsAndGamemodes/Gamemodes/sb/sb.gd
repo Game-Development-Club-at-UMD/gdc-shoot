@@ -6,7 +6,7 @@ const LEADER_BOARD = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWid
 var leaderboard: LeaderBoard 
 @export var player_spawn: Node3D
 @export var respawn_delay: float = 5.0 
-@export var gamemode_length = 10.0
+@export var gamemode_length = 900.0
 
 var respawn_trackers: Dictionary[int, Dictionary] = {}
 

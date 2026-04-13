@@ -5,11 +5,16 @@ class_name LeaderBoard
 
 # Tracks networking stats. Example: { 1: {"kills": 0, "deaths": 0, "is_dead": false} }
 var stats: Dictionary = {}
+var is_showcasing: bool = false # Prevents hiding the UI during the end-game showcase
 
 func _ready() -> void:
 	hide()
 
 func _process(_delta: float) -> void:
+	# If the match is over and we are showcasing, lock the leaderboard open
+	if is_showcasing:
+		return
+
 	# Toggles visibility based on input (e.g., holding 'Tab')
 	if stats.has(multiplayer.get_unique_id()):
 		if Input.is_action_pressed("show_leaderboard"):
@@ -37,6 +42,8 @@ func record_death(player_id: int) -> void:
 	if stats.has(player_id):
 		stats[player_id]["deaths"] += 1
 		stats[player_id]["is_dead"] = true
+		# Also need to make sure the killer gets credit elsewhere, 
+		# but for now we just record the death!
 		_sync_stats.rpc(stats)
 
 func record_kill(player_id: int) -> void:
@@ -52,6 +59,22 @@ func set_player_alive(player_id: int) -> void:
 		stats[player_id]["is_dead"] = false
 		_sync_stats.rpc(stats)
 
+# --- NEW: Helper to get Top Players based on Kills ---
+func get_top_players(limit: int = 3) -> Array:
+	var sorted_players = stats.keys()
+	
+	# Sort descending by kills. If tied, sort ascending by deaths.
+	sorted_players.sort_custom(func(a, b):
+		var kills_a = stats[a]["kills"]
+		var kills_b = stats[b]["kills"]
+		if kills_a != kills_b:
+			return kills_a > kills_b 
+		return stats[a]["deaths"] < stats[b]["deaths"]
+	)
+	
+	# Return up to 'limit' players
+	return sorted_players.slice(0, min(limit, sorted_players.size()))
+
 
 # ==========================================
 # NETWORKING & UI
@@ -60,7 +83,8 @@ func set_player_alive(player_id: int) -> void:
 @rpc("authority", "call_local", "reliable")
 func _sync_stats(new_stats: Dictionary) -> void:
 	stats = new_stats
-	update_ui()
+	if not is_showcasing:
+		update_ui()
 
 func update_ui() -> void:
 	# 1. Clear out the old list
@@ -74,12 +98,48 @@ func update_ui() -> void:
 		var kills = player_data["kills"]
 		var deaths = player_data["deaths"]
 		
-		# Use .get() as a failsafe just in case "is_dead" isn't in the dictionary
 		var status = "DEAD" if player_data.get("is_dead", true) else "ALIVE"
 		
-		# Create a simple text label for the leaderboard
 		var label = Label.new()
 		label.text = "Player %s | Kills: %d | Deaths: %d | %s" % [str(player_id), kills, deaths, status]
+		v_box_container.add_child(label)
+
+# --- NEW: RPC to trigger the end game showcase on all clients ---
+@rpc("authority", "call_local", "reliable")
+func show_end_game_showcase(top_players: Array) -> void:
+	is_showcasing = true
+	show() # Force the UI open
+	
+	# Clear the standard list
+	for child in v_box_container.get_children():
+		child.queue_free()
 		
-		# Add it to the VBoxContainer so it stacks neatly
+	# Add a title
+	var title = Label.new()
+	title.text = "=== MATCH OVER ==="
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	v_box_container.add_child(title)
+	
+	# Add some spacing
+	v_box_container.add_child(Control.new())
+	
+	# Showcase the Top 3
+	for i in range(top_players.size()):
+		var p_id = top_players[i]
+		var p_data = stats[p_id]
+		var label = Label.new()
+		
+		if i == 0:
+			label.text = "🏆 1ST PLACE: Player %s - %d Kills / %d Deaths 🏆" % [str(p_id), p_data["kills"], p_data["deaths"]]
+			label.add_theme_color_override("font_color", Color("gold"))
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		elif i == 1:
+			label.text = "🥈 2ND PLACE: Player %s - %d Kills / %d Deaths" % [str(p_id), p_data["kills"], p_data["deaths"]]
+			label.add_theme_color_override("font_color", Color("silver"))
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		elif i == 2:
+			label.text = "🥉 3RD PLACE: Player %s - %d Kills / %d Deaths" % [str(p_id), p_data["kills"], p_data["deaths"]]
+			label.add_theme_color_override("font_color", Color("cd7f32")) # Bronze
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			
 		v_box_container.add_child(label)

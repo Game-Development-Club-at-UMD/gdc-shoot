@@ -15,7 +15,7 @@ func _ready() -> void:
 	hide()
 
 func _process(delta: float) -> void:
-	if !is_multiplayer_authority(): pass
+	if !is_multiplayer_authority(): return
 	if !currently_active: return
 	
 	crosshair_002.visible = visible

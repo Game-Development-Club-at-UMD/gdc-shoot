@@ -2,6 +2,8 @@
 
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
+const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
+
 var abilites_ui : AbilitiesUI
 
 @export_category("REQUIRED OBJECTS")
@@ -35,6 +37,15 @@ func _ready() -> void:
 	
 	_setup_synchronizer()
 	
+	var name_label = MERC_LABEL.instantiate()
+	add_child(name_label)
+	
+	# Position it slightly above the player (Adjust the Y value based on your model height)
+	name_label.position = Vector3(0, 1.6, 0) 
+	
+	# Pass the player's network ID into the label so it knows whose name to grab
+	name_label.setup(name.to_int())
+	
 	if is_multiplayer_authority():
 		camera.make_current()
 		get_tree().physics_frame.connect(check_abilities)
@@ -48,6 +59,7 @@ func _ready() -> void:
 			visual_hand.hide()
 		
 		show_visual_body_to_world.rpc()
+		name_label.hide() #hide it local
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
@@ -182,7 +194,7 @@ func add_ability(ability: Ability) -> void:
 	if not multiplayer.is_server(): return
 	# The server tells EVERYONE (including itself) to attach this specific node
 	_sync_add_ability.rpc(ability.get_path())
-
+	
 func remove_ability(ability: Ability) -> void:
 	if not multiplayer.is_server(): return
 	
@@ -193,7 +205,7 @@ func remove_ability(ability: Ability) -> void:
 # ABILITY SYNCHRONIZATION (ALL PEERS)
 # ==========================================
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func _sync_add_ability(ability_path: NodePath) -> void:
 	# 1. Find the physical ability node in the world using its path
 	var ability_node = get_node_or_null(ability_path)
@@ -203,6 +215,10 @@ func _sync_add_ability(ability_path: NodePath) -> void:
 		
 	# 2. Resolve keybinds
 	ability_node.equip_ability(abilities)
+	ability_node.show()
+	for i in ability_node.get_children():
+		if i is Node3D:
+			i.show()
 	
 	# 3. Add to the local tracking array
 	if not abilities.has(ability_node):
@@ -215,8 +231,10 @@ func _sync_add_ability(ability_path: NodePath) -> void:
 	# 5. Refresh the local UI
 	if abilites_ui and abilites_ui.has_method("generate_ui"):
 		abilites_ui.generate_ui(self)
+	
+	ability_node.activate(abilities, self)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func _sync_remove_ability(ability_path: NodePath) -> void:
 	var ability_node = get_node_or_null(ability_path)
 	if not ability_node: return

@@ -13,13 +13,15 @@ signal player_voted(lobby_id: String, sender_id: int, vote_number: String)
 
 var Maps : Dictionary [String, PackedScene] = {
 	"sb_lobby" = load("res://MapsAndGamemodes/Maps/sb_Lobby/sb_lobby.tscn"),
-	"dm_grahhh" = load("res://MapsAndGamemodes/Maps/dm_grahhh/dm_grahhh.tscn"),
-	"hm_home" = load("res://MultiplayerStuff/home -._-/hm_home.tscn")
+	"hm_home" = load("res://MultiplayerStuff/home -._-/hm_home.tscn"),
+	"dm_dust2" = load("res://MapsAndGamemodes/Maps/dm_dust2/dm_dust2.tscn"),
+	"dm_grahhh" = load("res://MapsAndGamemodes/Maps/dm_grahhh/dm_grahhh.tscn")
 } 
 
 var Mercs : Dictionary [String, PackedScene] = {
 	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn"),
 	"homebody" = load("res://PlayerControllers/Mercs/HomeBody/HomeBody.tscn")
+	
 }
 
 var Characters : Dictionary [String, PackedScene] = {} 
@@ -33,7 +35,10 @@ var address = "localhost"
 
 #region Manager
 func add_player(peer_id : int): 
-	Players[peer_id] = {}
+	Players[peer_id] = {
+		"gamertag": "Player " + str(peer_id), 
+		"lobby": ""
+	}
 	rpc("sync_players", Players)
 
 func remove_player(peer_id : int):
@@ -44,6 +49,22 @@ func remove_player(peer_id : int):
 func sync_players(_players):
 	Players = _players
 	players_updated.emit()
+
+@rpc("any_peer", "call_remote", "reliable")
+func request_name_change(new_name: String):
+	if not multiplayer.is_server(): return
+	
+	var sender_id = multiplayer.get_remote_sender_id()
+	
+	# Strip invisible spaces and prevent blank names
+	var clean_name = new_name.strip_edges()
+	if clean_name == "":
+		return 
+		
+	# Update the player's data and sync it to everyone
+	if Players.has(sender_id):
+		Players[sender_id]["gamertag"] = clean_name
+		rpc("sync_players", Players)
 
 
 func update_lobbies(_lobbies):

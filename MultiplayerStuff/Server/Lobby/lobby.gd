@@ -60,7 +60,7 @@ func change_map(map_name : String):
 	
 	# Start the vote timer for the next transition
 	await get_tree().create_timer(time_till_map_vote).timeout
-	map_voting.initiate_vote(4)
+	map_voting.initiate_vote(30)
 
 func on_player_joined(player_id: int) -> void:
 	# 1. Add them to the master list
