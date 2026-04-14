@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cf0vx5q7uqe6c"]
+
+[ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_pmi7d"]
+
+[node name="Fiend" type="CharacterBody3D" unique_id=1377816512]
+script = ExtResource("1_pmi7d")
+metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
