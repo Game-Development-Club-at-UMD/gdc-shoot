@@ -47,8 +47,6 @@ const TEAM_COLORS = {
 }
 
 func _ready() -> void:
-	if ServerDatabase.address == "csdev03.d.umn.edu" and get_parent() is Lobby:
-		debug_mode = false
 	
 	# ==========================================
 	# DEBUG MODE SETUP

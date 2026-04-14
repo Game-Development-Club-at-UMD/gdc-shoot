@@ -15,7 +15,6 @@ health = 250.0
 health_per_sec = 10.0
 air_acceleration = 0.15
 speed = 0.75
-debug_mode = true
 abilities = [NodePath("JhomGun"), NodePath("JhomNade"), NodePath("JhomMunch"), null]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 

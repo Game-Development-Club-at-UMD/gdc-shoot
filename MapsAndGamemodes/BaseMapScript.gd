@@ -63,6 +63,7 @@ func _spawn_player(spawn_data:Dictionary):
 	var merc_real : Merc = merc_spanwed.instantiate()
 	
 	merc_real.name = str(spawn_data["peer_id"])
+	merc_real.debug_mode = false
 	merc_real.set_multiplayer_authority(int(spawn_data["peer_id"]))
 	merc_real.position = spawn_data["position"]
 	
