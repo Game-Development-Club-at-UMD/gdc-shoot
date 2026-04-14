@@ -11,7 +11,7 @@ func activate(abilities : Array[Ability], merc : Merc):
 	safe_merc = merc
 	area.monitoring = true
 	global_position = merc.global_position
-	reparent(merc.get_parent())
+	top_level = true
 
 func _process(delta: float) -> void:
 	if activated == true:
