@@ -8828,7 +8828,7 @@ mesh = SubResource("ArrayMesh_skfod")
 skeleton = NodePath("")
 
 [node name="sourcetree6" type="MeshInstance3D" parent="." unique_id=1595851937]
-transform = Transform3D(1.0744448, 1.2489549, -0.91648155, 2.3204844, -0.23966789, 0.7941662, 0.7107135, -1.105632, -1.2074358, 1.65205, 3.2806804, 10.268184)
+transform = Transform3D(1.2810335, 0.599405, -1.369589, 2.3204846, -0.2396679, 0.7941663, 0.13600886, -1.5566065, -0.64966583, 2.6219819, 3.2806804, 10.268184)
 mesh = SubResource("ArrayMesh_skfod")
 skeleton = NodePath("")
 
