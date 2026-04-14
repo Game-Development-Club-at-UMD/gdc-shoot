@@ -82,6 +82,7 @@ func shoot():
 	# Consume 1 ammo per trigger pull (even if it's a shotgun firing 8 pellets)
 	ammo = clamp(ammo - 1, 0, max_ammo)
 	
+	
 	# Restart animation and start the cooldown timer
 	animation_player.stop() 
 	animation_player.play("fire")

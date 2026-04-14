@@ -84,8 +84,14 @@ material = SubResource("StandardMaterial3D_frsov")
 
 [node name="Camera3D" type="Camera3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=594467270]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=391242647]
-transform = Transform3D(1, 0, 0, 0, 0.36313745, 0.9317356, 0, -0.9317356, 0.36313745, 0, 1.2454926, 2.6535952)
+[node name="DirectionalLight3D" type="SpotLight3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=372959255]
+transform = Transform3D(1, 0, 0, 0, 0.36313745, 0.9317356, 0, -0.9317356, 0.36313745, 0, 2.3829749, -1.3209751)
+light_energy = 1.403
+light_indirect_energy = 5.126
+light_specular = 2.714
+spot_range = 5.225
+spot_attenuation = -1.17
+spot_angle = 32.99246
 
 [node name="SpinSpawn" type="Marker3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=379684050]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026600122, 0.13624978, -2.2191494)
