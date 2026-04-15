@@ -18,11 +18,13 @@ metallic = 1.0
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gthcp"]
 material = SubResource("StandardMaterial3D_gthcp")
 
-[node name="MC" type="CharacterBody3D" unique_id=1976584918 node_paths=PackedStringArray("camera", "abilities")]
+[node name="MC" type="CharacterBody3D" unique_id=1976584918 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
 script = ExtResource("1_muwch")
 camera = NodePath("Camera3D")
 health = 150.0
 speed = 0.5
+visual_body = NodePath("Helmet")
+visual_hand = NodePath("HaloAR")
 debug_mode = true
 abilities = [NodePath("SprintAbility"), NodePath("JumpAbility"), NodePath("HaloAR")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
