@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://c8y3no4wbaaf7"]
+
+[ext_resource type="Script" uid="uid://bk51phcq14oxy" path="res://PlayerControllers/Mercs/Default/first_person_controller.gd" id="1_uuibg"]
+[ext_resource type="Script" uid="uid://citp50pf2ul2s" path="res://MultiplayerStuff/Client/client_ui.gd" id="2_4nij0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g1ecg"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kr8st"]
+properties/0/path = NodePath(".:input")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=894558095]
+collision_layer = 0
+script = ExtResource("1_uuibg")
+debug_mode = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1625866823]
+shape = SubResource("CapsuleShape3D_lwjk5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=315240941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.34232295, 0, 0, 0.26418364)
+mesh = SubResource("CapsuleMesh_g1ecg")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=724319984]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
+fov = 90.0
+
+[node name="UI" type="Control" parent="." unique_id=861840572]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Velocity" type="Label" parent="UI" unique_id=1355452923]
+layout_mode = 0
+offset_left = -553.0
+offset_top = -306.0
+offset_right = -513.0
+offset_bottom = -283.0
+scale = Vector2(2.87363, 2.87363)
+
+[node name="ColorRect" type="ColorRect" parent="UI" unique_id=1663850141]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_right = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimeToStartPulling" type="Timer" parent="." unique_id=353347098]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=894683685]
+replication_config = SubResource("SceneReplicationConfig_kr8st")
+
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=226900716]
+replication_config = SubResource("SceneReplicationConfig_kr8st")
+script = ExtResource("2_4nij0")
