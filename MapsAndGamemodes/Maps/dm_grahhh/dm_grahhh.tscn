@@ -6807,7 +6807,6 @@ map_name = "dm_grahhh"
 
 [node name="Player" parent="." unique_id=728258314 instance=ExtResource("32_du516")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.374987, 1.0645669, -3.052824)
-debug_mode = true
 
 [node name="dm_grahhh" type="Node3D" parent="." unique_id=1976147213]
 transform = Transform3D(2.89, 0, 0, 0, 2.89, 0, 0, 0, 2.89, -9, -0.6544622, 0)

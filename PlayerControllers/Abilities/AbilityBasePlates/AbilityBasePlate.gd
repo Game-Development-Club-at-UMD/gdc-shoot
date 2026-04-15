@@ -26,7 +26,7 @@ const FALLBACK_KEYS: Array[String] = [
 	"None",
 	# --- LETTERS ---
 	"E", "Q", "F",
-	"G", "H", "V", "B", "N", "M", "T", "Y", "X", "C", "Z",
+	"G", "H", "V", "B", "T", "Y", "X", "C", "Z",
 	# --- NUMBERS ---
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
 	# --- MODIFIERS ---
