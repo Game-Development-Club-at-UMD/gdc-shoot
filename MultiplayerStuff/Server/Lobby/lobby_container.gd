@@ -248,7 +248,7 @@ func _on_player_disconnected(peer_id: int):
 # ==========================================
 
 func _start_lobby_deletion_timer(lobby_id: String) -> void:
-	if empty_lobby_timers.has(lobby_id) or lobby_id == '``':
+	if empty_lobby_timers.has(lobby_id) or lobby_id == 'home':
 		return # Timer is already running
 		
 	var timer = Timer.new()
@@ -272,7 +272,7 @@ func _cancel_lobby_deletion_timer(lobby_id: String) -> void:
 		print("Player joined Lobby '", lobby_id, "'. Deletion cancelled.")
 
 func _on_empty_lobby_timeout(lobby_id: String) -> void:
-	if !multiplayer.is_server(): return
+	if !multiplayer.is_server() or lobby_id == 'home': return
 	
 	# Double check that the lobby is still empty and actually exists
 	if lobbies.has(lobby_id) and lobbies[lobby_id].is_empty():
