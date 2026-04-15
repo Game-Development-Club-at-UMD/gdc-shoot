@@ -41,7 +41,7 @@ stream = ExtResource("5_euw0f")
 autoplay = true
 max_distance = 50.0
 
-[node name="Sketchfab_Scene" parent="." unique_id=262531744 instance=ExtResource("5_010wl")]
+[node name="Helmet" parent="." unique_id=262531744 instance=ExtResource("5_010wl")]
 transform = Transform3D(0.006, 0, 0, 0, 0.005525808, 0.0023378301, 0, -0.0023378301, 0.005525808, 0, 1.2446154, 0.20199335)
 
 [node name="Hud" type="Sprite2D" parent="." unique_id=1041843924]
@@ -50,6 +50,7 @@ scale = Vector2(0.35, 0.35)
 texture = ExtResource("7_gthcp")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1200066343]
+visible = false
 layout_direction = 2
 anchors_preset = 5
 anchor_left = 0.5
