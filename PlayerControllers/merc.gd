@@ -115,7 +115,6 @@ func _ready() -> void:
 	name_label_instance.setup(name.to_int())
 	
 	if is_multiplayer_authority():
-		print("ENVIORNMENTHELLO?")
 		var map = get_parent()
 		if map is Map and camera and map.environment != null:
 			camera.environment = map.environment

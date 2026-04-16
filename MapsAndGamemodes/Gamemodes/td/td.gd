@@ -23,8 +23,6 @@ var has_picked_team_locally := false
 @export var respawn_delay: float = 5.0 
 @export var gamemode_length = 10.0
 
-
-
 func _ready() -> void:
 	leaderboard = LEADER_BOARD.instantiate()
 	add_child(leaderboard)
@@ -214,16 +212,16 @@ func start_char_select():
 func _unhandled_input(event: InputEvent) -> void:
 	# Handle the 'M' key (Change Character)
 	if Input.is_action_just_pressed("change_character"):
-		if char_select_ui: 
+		if char_select_ui:
 			char_select_ui.show()
 			
 		# Tell the server we want to switch, which requires killing us
-		request_suicide_for_switch.rpc_id(1)
+		request_suicide_for_switch.rpc_id(1, 'character')
 	# Handle the 'N' key (Change Team)
 	if Input.is_action_just_pressed("change_team"):
 		if team_select_ui:
 			team_select_ui.show()
-		request_suicide_for_switch.rpc_id(1)
+		request_suicide_for_switch.rpc_id(1, 'team')
 	
 
 # --- SERVER SIDE LOGIC ---
@@ -256,8 +254,15 @@ func submit_team_choice(team_name: String):
 		respawn_trackers[sender_id]["respawn_timer"] = 0.0
 
 @rpc("any_peer", "call_remote", "reliable")
-func request_suicide_for_switch():
+func request_suicide_for_switch(switch_type : String):
 	var sender_id = multiplayer.get_remote_sender_id()
+	
+	if switch_type == "character":
+		master_character_database[sender_id] = ""
+	elif switch_type == "team":
+		master_team_database[sender_id] = ""
+		# Sync the database to all clients so UI updates to show them as unassigned
+		update_client_team_databases.rpc(master_team_database)
 	
 	# Find their physical body in the world
 	var merc_node = get_node_or_null(str(sender_id))
