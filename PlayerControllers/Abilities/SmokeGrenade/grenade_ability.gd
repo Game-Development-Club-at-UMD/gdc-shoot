@@ -4,7 +4,7 @@ extends WeaponAbility
 @onready var grenade: RigidBody3D = $Grenade
 @onready var fuse_timer: Timer = $FuseTimer
 @onready var cpu_particles_3d: CPUParticles3D = $Grenade/CPUParticles3D
-@onready var explosion_radius: Area3D = $Grenade/ExplosionRadius
+@onready var detection_radius: Area3D = $Grenade/DetectionRadius
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 
 @export var cool_down := 5.0
@@ -42,6 +42,7 @@ func equip():
 	anim_player.queue("idle")
 	
 func dequip():
+	if thrown == true: return
 	anim_player.play("dequip")
 	await anim_player.animation_finished
 	hide()
@@ -49,10 +50,6 @@ func dequip():
 @rpc("any_peer", "call_local", "reliable")
 func explode():
 	# Only the authority should calculate and send damage
-	if is_multiplayer_authority():
-		for i in explosion_radius.get_overlapping_bodies():
-			if i != null and i is Merc:
-				i.take_damage.rpc_id(i.name.to_int(), damage) 
 	
 	# Everything below this runs locally for all clients (Visuals/Cleanup)
 	$Grenade/FogVolume.visible = true
@@ -61,6 +58,7 @@ func explode():
 	grenade.set_deferred("freeze", true)
 	$DurationTimer.start()
 	await $DurationTimer.timeout
+	print($DurationTimer.time_left)
 	
 	reset_grenade()
 
@@ -84,3 +82,12 @@ func reset_grenade():
 func _on_fuse_timer_timeout() -> void:
 	if grenade and is_multiplayer_authority():
 		explode.rpc()
+
+
+func _on_detection_radius_body_entered(body: Node3D) -> void:
+	if body is Merc and not (body == get_parent()) and thrown:
+		$Grenade/DetectionRadius/Beep.play()
+		var max_speed = 10
+		clamp(body.velocity.x, 0, max_speed)
+		clamp(body.velocity.y, 0, max_speed)
+		clamp(body.velocity.z, 0, max_speed)

@@ -4,7 +4,7 @@ extends WeaponAbility
 @onready var tracer_effect: Node3D = $TracerEffect
 @onready var fire_attack_speed: Timer = $FireAttackSpeed
 @onready var crosshair_002: Sprite2D = $Crosshair002
-@onready var label: Label = $Crosshair002/Label
+@onready var label: Label = $Label
 var equipped = false
 
 @export_category("Weapon Stats")
@@ -27,14 +27,20 @@ var _initial_mesh_rotation: Vector3
 # Add ONE RayCast3D here for a Pistol/Rifle, or add MULTIPLE for a Shotgun
 @export var raycasts: Array[RayCast3D] = [] 
 
-var ammo: int
+var ammo: int : set = set_ammo
+
+func set_ammo(value):
+	ammo = value
+	if ammo == 0:
+		$boltgun/Cube_002.visible = false
+	else:
+		$boltgun/Cube_002.visible = true
 
 func _ready() -> void:
-	ammo = max_ammo
 	fire_attack_speed.wait_time = fire_speed
 	fire_attack_speed.one_shot = true
 	hide()
-	label.text = str(ammo) + "/" + str(max_ammo)
+	label.text = str(get_parent().bolts)
 	
 	# --- NEW: Save the resting position of the visual mesh ---
 	if weapon_mesh:
@@ -45,7 +51,9 @@ func _process(delta: float) -> void:
 	if !is_multiplayer_authority(): return
 	if !currently_active: return
 	
-	#crosshair_002.visible = visible
+	if ammo > 0:
+		crosshair_002.visible = visible
+		$Label.visible = visible
 	global_transform = merc.camera.global_transform
 	
 	# Don't allow shooting or reloading while already reloading
@@ -70,26 +78,28 @@ func _process(delta: float) -> void:
 		_apply_weapon_bob_and_tilt(delta)
 
 func reload():
-	animation_player.play("reload")
-	await animation_player.animation_finished
-	ammo = max_ammo
-	label.text = str(ammo) + "/" + str(max_ammo)
+	pass
 
 func shoot():
-	if ammo <= 0:
+	if ammo <= 0 or get_parent().bolts <= 0:
 		# Optional: Play a "click" sound here for empty ammo
 		return
 	
 	# Consume 1 ammo per trigger pull (even if it's a shotgun firing 8 pellets)
-	ammo = clamp(ammo - 1, 0, max_ammo)
+	get_parent().bolts -= 1
+	ammo -= 1
 	
 	$AudioStreamPlayer3D.play()
 	# Restart animation and start the cooldown timer
 	animation_player.stop() 
 	animation_player.play("shoot")
 	fire_attack_speed.start()
-	label.text = str(ammo) + "/" + str(max_ammo)
+	label.text = str(get_parent().bolts)
 	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
+	if get_parent().bolts <= 0:
+		$boltgun/Cube_002.visible = false
+	else:
+		$boltgun/Cube_002.visible = true
 	_do_raycasts()
 
 func _do_raycasts() -> void:
@@ -103,6 +113,10 @@ func _do_raycasts() -> void:
 			var person_hit = rc.get_collider()
 			if person_hit != null and person_hit is Merc:
 				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
+				person_hit.speed -= 0.12
+				var tracker_bolt = load("res://PlayerControllers/Abilities/TrackerBoltGun/tracker_bolt.tscn").instantiate()
+				tracker_bolt.tracker = self
+				person_hit.add_child(tracker_bolt)
 				
 			# Spawn tracer at hit point
 			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, rc.get_collision_point())
@@ -125,6 +139,7 @@ func dequip():
 	equipped = false
 	hide()
 	crosshair_002.hide()
+	$Label.hide()
 	show_visual_hand.rpc(false)
 
 # ==========================================
