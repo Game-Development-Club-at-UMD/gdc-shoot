@@ -1,5 +1,5 @@
 extends OneShotAbility
 @onready var gas_emit = $AudioStreamPlayer3D
 
-func activate(abilities: Array[Ability], merc: Merc):
+func _on_activate_just_pressed():
 	gas_emit.play()

@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://byblikkwgri3q" path="res://PlayerControllers/Abilities/Sprint/SprintAbility.tscn" id="2_gknva"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="6_5twnm"]
 [ext_resource type="Material" uid="uid://dkhu3aa0o8vps" path="res://MapsAndGamemodes/Maps/dm_grahhh/gallerycarpet.tres" id="6_f1ajo"]
-[ext_resource type="Material" uid="uid://bm5npalrr2vm4" path="res://MapsAndGamemodes/Maps/dm_grahhh/babymeat.tres" id="7_gknva"]
+[ext_resource type="Material" path="res://MapsAndGamemodes/Maps/dm_grahhh/babymeat.tres" id="7_gknva"]
 [ext_resource type="PackedScene" uid="uid://vmlcnayrosrt" path="res://PlayerControllers/Mercs/Tracker/ads.tscn" id="7_lwdld"]
 [ext_resource type="PackedScene" uid="uid://c4kg4o6mwrs2m" path="res://PlayerControllers/Abilities/TrackerRifle/TrackerRifle.tscn" id="8_gknva"]
 [ext_resource type="PackedScene" uid="uid://dvr218k27n36v" path="res://PlayerControllers/Abilities/SmokeGrenade/SmokeGrenadeAbility.tscn" id="8_lwdld"]
@@ -76,6 +76,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5445492, 0)
 
 [node name="Smoke" parent="." unique_id=2020247024 instance=ExtResource("8_lwdld")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6188444, 0)
+throw_strength = 12.0
 trigger_key = "3"
 
 [node name="TrackerUI" type="Control" parent="." unique_id=1747036020]
