@@ -8,6 +8,5 @@ func custom_process(_delta : float):
 	else:
 		animation_player.pause()
 
-
 func custom_ready():
 	animation_player.play("walk")

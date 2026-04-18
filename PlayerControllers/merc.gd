@@ -32,6 +32,11 @@ var health_bar : ProgressBar
 @export var merc_UI_color : Color
 @export var camera_fov : float = 90.0
 @export var debug_mode : bool = false
+			#and more implicitones
+			#ex. position
+			#scale
+			#velocity
+			#is_on_floor()
 
 
 @export var abilities : Array[Ability]
@@ -93,7 +98,7 @@ func _ready() -> void:
 		#debug_light.top_level = true
 		#debug_light.rotation_degrees = Vector3(-45, 45, 0)
 		#add_child(debug_light)
-		#
+		
 		print("--- DEBUG MODE ACTIVE: Local Server & Floor Generated ---")
 
 	# ==========================================
@@ -257,7 +262,7 @@ func _input(event: InputEvent) -> void:
 func check_abilities() -> void:
 	if abilities.size() <= 0: return
 	for i in abilities:
-		if i == null: return
+		if i == null: continue
 		if !i.is_multiplayer_authority():
 			i.set_multiplayer_authority(int(name), true)
 		if i.abilities !=abilities: i.abilities = abilities
@@ -389,8 +394,7 @@ func take_damage(damage: float):
 func _sync_flash_damage() -> void:
 	if not visual_body: return
 	
-	# 1. Create a bright, unshaded yellow material
-# 1. Create a semi-transparent yellow material
+	# 1. Create a semi-transparent yellow material
 	var flash_mat = StandardMaterial3D.new()
 	# The 4th number (0.4) is the alpha/opacity. 0.0 is invisible, 1.0 is solid.
 	flash_mat.albedo_color = Color(1.0, 1.0, 0.0, 0.4) 
@@ -401,8 +405,10 @@ func _sync_flash_damage() -> void:
 	_apply_overlay_recursive(visual_body, flash_mat)
 	
 	# 3. Wait for the flash duration
-	await get_tree().create_timer(0.15).timeout
+	var tween = create_tween()
+	tween.tween_interval(.15)
 	
+	#if not visual_body: return
 	# 4. Strip the overlay off everything
 	if is_instance_valid(visual_body):
 		_apply_overlay_recursive(visual_body, null)

@@ -6,7 +6,6 @@ signal success
 signal failure
 signal activated(status: bool)
 
-var currently_active = false
 var abilities : Array[Ability]
 var merc : Merc
 
@@ -64,7 +63,7 @@ func equip_ability(abilities: Array[Ability]) -> void:
 				trigger_key = key
 				new_key_found = true
 				break
-				
+	
 		# Second pass: Check fallback keys if all numbers are taken
 		if not new_key_found:
 			for key in FALLBACK_KEYS:
