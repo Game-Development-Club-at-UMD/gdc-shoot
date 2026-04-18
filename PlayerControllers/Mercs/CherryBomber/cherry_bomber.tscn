@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://g1tgi30f4ugx"]
 
-[ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_di7hv"]
+[ext_resource type="Script" uid="uid://c8dxjt1gga7ys" path="res://PlayerControllers/Mercs/CherryBomber/cherry_bomber.gd" id="1_uvt7h"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="2_8p1qd"]
 [ext_resource type="Script" uid="uid://baxvk1ovwww1d" path="res://PlayerControllers/Abilities/DoohickyGun/doohicky_gun_ability.gd" id="3_x1xtt"]
 [ext_resource type="PackedScene" uid="uid://chc6mck8aov7f" path="res://PlayerControllers/Abilities/EvilGun/tracer_effect.tscn" id="4_8qkhc"]
@@ -1110,18 +1110,134 @@ properties/0/path = NodePath("Grenade:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
+[sub_resource type="Animation" id="Animation_vrua5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CherryBomberModel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CherryBomberModel:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5707964, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CherryBomberModel/Cylinder:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6duwj"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CherryBomberModel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1.1095695, 1.3195082, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.05, 0), Vector3(0, -0.05, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CherryBomberModel/Cylinder:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(0.3077863, 1.8660663, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.1134464), Vector3(0, 0, -0.108210415)]
+}
+
+[sub_resource type="Animation" id="Animation_jvs4c"]
+resource_name = "walk"
+length = 0.45
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CherryBomberModel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.1, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CherryBomberModel:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5707964, 0), Vector3(0.13962634, 1.5707964, 0), Vector3(-0.13962634, 1.5707964, 0), Vector3(0, 1.5707964, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CherryBomberModel/Cylinder:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(2.8284273, 2.7320802, 2.7320807, 3.0314324, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.034906585, 0, 0), Vector3(0.13613568, 0, 0), Vector3(-0.019198623, 0, 0), Vector3(-0.20071286, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qun4b"]
+_data = {
+&"RESET": SubResource("Animation_vrua5"),
+&"idle": SubResource("Animation_6duwj"),
+&"walk": SubResource("Animation_jvs4c")
+}
+
 [node name="CherryBomber" type="CharacterBody3D" unique_id=979811932 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
-script = ExtResource("1_di7hv")
+script = ExtResource("1_uvt7h")
 camera = NodePath("Camera3D")
 visual_body = NodePath("CherryBomberModel")
 merc_UI_color = Color(0.75686276, 0, 0, 1)
-debug_mode = true
 abilities = [NodePath("JumpAbility"), NodePath("DoohickyGun"), NodePath("C4")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="CherryBomberModel" type="Node3D" parent="." unique_id=690071305]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
-visible = false
 
 [node name="Icosphere" type="MeshInstance3D" parent="CherryBomberModel" unique_id=941721479]
 mesh = SubResource("ArrayMesh_s2686")
@@ -1254,7 +1370,6 @@ visual_hand = NodePath("Grenade/C4")
 trigger_key = "1"
 
 [node name="Grenade" type="RigidBody3D" parent="C4" unique_id=2084771126]
-transform = Transform3D(1, 0, 0, 0, 0.91918397, -0.3938284, 0, 0.3938284, 0.91918397, 0.423, 0.042, -0.884)
 top_level = true
 collision_layer = 0
 collision_mask = 3
@@ -1264,6 +1379,7 @@ freeze = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="C4/Grenade/ExplosionRadius" unique_id=1608404638]
 transform = Transform3D(1.4343741, -5.9604645e-08, 2.9802322e-08, 0, 1.4343741, 0, -1.4901161e-08, 1.4901161e-08, 1.4343741, 0, 0, 0)
+visible = false
 shape = SubResource("SphereShape3D_ypg12")
 debug_color = Color(0.77254903, 0, 0.09803922, 0.7921569)
 
@@ -1290,7 +1406,7 @@ transform = Transform3D(0.76582, -0.17333014, 0.6192548, -1.4901161e-07, 0.96298
 shape = SubResource("BoxShape3D_r51g3")
 
 [node name="Doohicky" type="Node3D" parent="C4" unique_id=1747705607]
-transform = Transform3D(-0.46004677, 0.093597576, -0.88294756, 0.19936793, 0.9799247, 0, 0.8652221, -0.17603143, -0.46947157, 0.54, -0.33, -0.85)
+transform = Transform3D(-0.46004674, 0.093597576, -0.8829475, 0.19936791, 0.9799247, 0, 0.86522204, -0.17603143, -0.46947154, 0.54, -0.33, -0.85)
 visible = false
 
 [node name="Body" type="MeshInstance3D" parent="C4/Doohicky" unique_id=1592089141]
@@ -1316,3 +1432,6 @@ libraries/ = SubResource("AnimationLibrary_nla6h")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="C4" unique_id=888136363]
 replication_config = SubResource("SceneReplicationConfig_seah1")
+
+[node name="BodyAnimPlayer" type="AnimationPlayer" parent="." unique_id=1956361010]
+libraries/ = SubResource("AnimationLibrary_qun4b")
