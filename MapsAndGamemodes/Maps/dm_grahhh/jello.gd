@@ -25,6 +25,10 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 			eaturmeat.play()
 			body.take_damage.rpc_id(body.name.to_int(), damage) 
 
+@rpc("any_peer", "call_remote", "reliable")
+func pudding_alarm_rpc():
+	puddingalarm.play()
+
 func _on_timer_timeout() -> void:
 	area.monitoring = true
-	puddingalarm.play()
+	rpc("pudding_alarm_rpc")
