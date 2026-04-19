@@ -1,6 +1,9 @@
 extends Ability
 
+@warning_ignore("unused_signal")
+# Note: This exists because YAM won't add an ability unless it has this signal
 signal uses_updated(_uses: int, _prior: int)
+
 func get_activations() -> int: return 0
 func update_cost_mult(_p: float) -> void: return
 
@@ -18,9 +21,9 @@ var total_activations: int = 0:
 			total_activations_updated.emit(total_activations)
 
 var connected: bool = false
-func connect_to_abilities(merc: Merc) -> void:
+func connect_to_abilities(m: Merc) -> void:
 	if connected: return
-	cmerc = merc
+	cmerc = m
 	if !cmerc: return
 	if !cmerc.has_signal("cash_updated"): return # Only touch YAM-Compatible playerss
 	
@@ -53,9 +56,9 @@ func connect_to_abilities(merc: Merc) -> void:
 				ability.activations *= p
 		)
 
-func get_new_mult(activations: int) -> float:
-	if total_activations == activations: total_activations += 1
-	return 1.0 / (1 - ((1.0 * activations) / (1.0 * total_activations)))
+func get_new_mult(act: int) -> float:
+	if total_activations == act: total_activations += 1
+	return 1.0 / (1 - ((1.0 * act) / (1.0 * total_activations)))
 	# Ignore the "1.0 *" bs, it's just so that godot stops complaining about int div
 
 # Ran whenever "activated". I assume that because this is passive it is every frame
