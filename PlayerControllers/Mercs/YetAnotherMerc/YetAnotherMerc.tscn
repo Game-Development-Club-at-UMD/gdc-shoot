@@ -15,8 +15,8 @@
 [ext_resource type="Script" uid="uid://c3xib2wiq032w" path="res://PlayerControllers/Abilities/MoneyBased/money_jump.gd" id="11_hid7e"]
 [ext_resource type="Script" uid="uid://jw4xg8xmvwg0" path="res://PlayerControllers/Abilities/MoneyBased/money_sprint.gd" id="13_f2hxi"]
 [ext_resource type="Script" uid="uid://cpmibxxp622lk" path="res://PlayerControllers/Abilities/MoneyBased/supply_and_demand.gd" id="14_0oa5j"]
-[ext_resource type="Script" path="res://PlayerControllers/Mercs/YetAnotherMerc/ui.gd" id="16_4v6uc"]
-[ext_resource type="FontFile" uid="uid://blatm825mdsk8" path="res://PlayerControllers/Mercs/YetAnotherMerc/TF2Build_centered.ttf" id="17_2ktc3"]
+[ext_resource type="Script" uid="uid://bqlafu15hbs0a" path="res://PlayerControllers/Mercs/YetAnotherMerc/ui.gd" id="16_4v6uc"]
+[ext_resource type="FontFile" uid="uid://cvhl8rsuvcd8q" path="res://PlayerControllers/Mercs/YetAnotherMerc/TF2Build_centered.ttf" id="17_2ktc3"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0oa5j"]
 radius = 0.25
