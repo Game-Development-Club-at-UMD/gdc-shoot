@@ -95,8 +95,6 @@
 [ext_resource type="AudioStream" uid="uid://ddn648f5fbb3j" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/importmodels/hand/grasping.mp3" id="70_j88de"]
 [ext_resource type="PackedScene" uid="uid://bsq06hdwu0wav" path="res://MapsAndGamemodes/Maps/dm_grahhh/pudding.tscn" id="79_n5ope"]
 [ext_resource type="Shader" uid="uid://cq7k0p2vhltji" path="res://MapsAndGamemodes/Maps/dm_grahhh/dm_grahhh.gdshader" id="89_ua3rl"]
-[ext_resource type="PackedScene" uid="uid://m3x50ujkghf8" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/AbilityPickup/ability_pickup.tscn" id="96_j88de"]
-[ext_resource type="PackedScene" uid="uid://nhp4lghbjo31" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/Bomb.tscn" id="97_unbgr"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_b8aas"]
 data = PackedVector3Array(-0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5)
@@ -8495,7 +8493,7 @@ before_round_start_barriers = NodePath("PrematchBarrier")
 bomb_spawn_point = NodePath("BombSpawnPoint")
 map_name = "de_grahhh"
 environment = ExtResource("2_spnh3")
-characters_allowed = Array[String](["Tech", "Tracker", "Crutch", "CherryBomber", "Fiend", "cheif", "YAM"])
+characters_allowed = Array[String](["Arson", "Tech", "Tracker", "Crutch", "CherryBomber", "Fiend", "cheif"])
 
 [node name="spawns" type="Node3D" parent="." unique_id=1233941173]
 
@@ -12359,10 +12357,6 @@ shape = SubResource("BoxShape3D_unbgr")
 [node name="BombSpawnPoint" type="Marker3D" parent="." unique_id=1436916176]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0328622, 4.561704, 23.794388)
 gizmo_extents = 1.19
-
-[node name="AbilityPickup" parent="BombSpawnPoint" unique_id=167658854 instance=ExtResource("96_j88de")]
-ability_scene = ExtResource("97_unbgr")
-consumable = true
 
 [connection signal="body_entered" from="dm_grahhh/Jello/Area3D" to="dm_grahhh/Jello" method="_on_area_3d_body_entered"]
 [connection signal="timeout" from="dm_grahhh/Jello/Timer" to="dm_grahhh/Jello" method="_on_timer_timeout"]

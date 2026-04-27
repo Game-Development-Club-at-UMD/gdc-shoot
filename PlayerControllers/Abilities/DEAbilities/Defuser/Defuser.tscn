@@ -63,3 +63,6 @@ stream = ExtResource("3_wepyk")
 volume_db = -10.54
 max_distance = 36.23
 panning_strength = 1.52
+
+[node name="Bombdefused" type="AudioStreamPlayer" parent="." unique_id=1278563290]
+stream = ExtResource("3_nm107")
