@@ -224,3 +224,14 @@ func _update_ui() -> void:
 			display_text += str(i + 1) + ": " + map_name + " (" + str(votes) + ")\n"
 		
 	vote_label.text = display_text
+
+func force_finish_vote() -> void:
+	if not multiplayer.is_server(): return
+	if not is_voting_active: return
+	
+	# Incrementing this ID defuses the original 30-second await timer 
+	# in initiate_vote() so it doesn't try to fire again later
+	_current_vote_id += 1 
+	
+	_end_vote()
+	

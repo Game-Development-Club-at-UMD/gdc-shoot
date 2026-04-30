@@ -92,12 +92,18 @@ func _process(delta: float) -> void:
 		if defuse_ui:
 			defuse_ui.update_timer(0.0, current_state)
 			
-		# Check if at least one player has locked in a valid team to start the match
 		if multiplayer.is_server():
+			var has_attacker = false
+			var has_defender = false
+			
+			# Check if we have at least one person on EACH team
 			for team in master_team_database.values():
-				if team in ["red", "blue"]:
-					reset_round() # This automatically shifts us into the FREEZE state
-					break
+				if team == "red": has_attacker = true
+				if team == "blue": has_defender = true
+				
+			# Only start the match if both teams have players
+			if has_attacker and has_defender:
+				reset_round()
 		return
 		
 	# Both server AND client count down the timer so the UI is completely smooth every frame
@@ -161,7 +167,6 @@ func _toggle_barriers(is_on: bool):
 	
 func reset_round() -> void:
 	if not multiplayer.is_server(): return
-	spawn_bomb_pickup(bomb_spawn_point.global_position)
 	
 	if is_instance_valid(active_bomb):
 		active_bomb.queue_free()
@@ -171,9 +176,11 @@ func reset_round() -> void:
 	for child in get_children():
 		if child is Merc:
 			child.queue_free()
-			
+		elif child.scene_file_path == ABILITY_PICKUP.resource_path:
+			child.queue_free()
 	# 2. Spawn everyone for the new round
 	spawn_teams_for_new_round()
+	spawn_bomb_pickup(bomb_spawn_point.global_position)
 	
 	# 3. Put us back into the Freeze phase
 	_set_state(RoundState.FREEZE, freeze_duration)
@@ -215,7 +222,11 @@ func _on_player_left(player_id: int) -> void:
 func player_died(merc: Merc, killer_id: int = 0) -> void:
 	if not multiplayer.is_server(): return
 	var player_id = merc.name.to_int()
-	
+	for i in merc.abilities:
+		print(i)
+		if i != null and i.name == 'Bomb':
+			print(i.name)
+			spawn_dropped_orb("res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/Bomb.tscn", merc.global_position, true)
 	players_alive_this_round.erase(player_id)
 	merc.queue_free()
 	

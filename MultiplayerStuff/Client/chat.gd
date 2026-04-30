@@ -39,7 +39,11 @@ func _on_chat_text_submitted(new_text: String) -> void:
 
 func _on_server_message_received(sender_id: int, message: String) -> void:
 	# A sender_id of 0 means it's a System message!
-	var sender_name = "System" if sender_id == 0 else "Player " + str(sender_id)
+	var player_name = str(sender_id)
+	if ServerDatabase.Players.has(sender_id):
+		player_name = ServerDatabase.Players[sender_id]["gamertag"]
+		
+	var sender_name = "System" if sender_id == 0 else player_name
 	chat_display.append_text("\n[b]%s:[/b] %s" % [sender_name, message])
 	
 	# Show the chat briefly, unless they are currently typing (we don't want to fade if they are typing)

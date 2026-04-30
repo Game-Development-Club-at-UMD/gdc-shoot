@@ -88,6 +88,9 @@ func on_player_left(player_id: int) -> void:
 
 func game_end():
 	#animssss  and stuff
+	if map_voting.is_voting_active:
+		map_voting.force_finish_vote()
+	
 	change_map(next_map)
 
 func _on_force_end_game(target_lobby_id: String) -> void:

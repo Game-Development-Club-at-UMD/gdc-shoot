@@ -346,7 +346,9 @@ func check_abilities() -> void:
 func add_ability(scene_path: String) -> void:
 	if not multiplayer.is_server(): return
 	if abilities:
-		for i in abilities: if i.name == 'bomb': return #only one bomb
+		for i in abilities: 
+			if i != null and i.name == 'bomb': 
+				return #only one bomb`
 	
 	# The spawner sends the string to all current AND future clients
 	ability_spawner.spawn(scene_path)
