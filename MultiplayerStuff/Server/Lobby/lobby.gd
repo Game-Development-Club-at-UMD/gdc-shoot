@@ -20,6 +20,7 @@ func _ready() -> void:
 	register_spawnable_maps()
 	if not multiplayer.is_server(): return
 	ServerDatabase.force_end_game.connect(_on_force_end_game)
+	ServerDatabase.force_change_map.connect(_on_force_change_map)
 
 func register_spawnable_maps(): #<ALL>
 	spawner.clear_spawnable_scenes()
@@ -95,6 +96,12 @@ func _on_force_end_game(target_lobby_id: String) -> void:
 		print("Lobby ", name, " ending game early via admin command!")
 		
 		game_end()
+
+func _on_force_change_map(target_lobby_id: String, requested_map: String) -> void:
+	# Make sure the command was sent from a player actually inside THIS lobby
+	if target_lobby_id == name:
+		print("Lobby ", name, " changing map forcefully via admin command to: ", requested_map)
+		change_map(requested_map)
 		
 func _on_map_voting_vote_finished(winning_map: String) -> void:
 	next_map = winning_map

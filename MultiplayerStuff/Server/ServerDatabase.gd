@@ -11,6 +11,7 @@ signal lobbies_updated
 signal chat_message_received(sender_id: int, message: String)
 signal player_voted(lobby_id: String, sender_id: int, vote_number: String)
 signal force_end_game(lobby_id: String)
+signal force_change_map(lobby_id: String, map_name: String)
 
 var Maps : Dictionary [String, PackedScene] = {
 	"sb_lobby" = load("res://MapsAndGamemodes/Maps/sb_Lobby/sb_lobby.tscn"),
@@ -128,7 +129,18 @@ func _process_command(sender_id: int, lobby_id: String, command_string: String):
 				player_voted.emit(lobby_id, sender_id, args[1])
 			else:
 				receive_chat_message.rpc_id(sender_id, 0, "Usage: /vote [number]")
-				
+		"/changemap": # <--- NEW COMMAND START
+			if args.size() > 1:
+				var requested_map = args[1]
+				# Validate that the map exists in the database
+				if Maps.has(requested_map):
+					print("Player ", sender_id, " forced map change to ", requested_map, " in lobby: ", lobby_id)
+					force_change_map.emit(lobby_id, requested_map)
+				else:
+					receive_chat_message.rpc_id(sender_id, 0, "Error: Map '" + requested_map + "' does not exist.")
+			else:
+				receive_chat_message.rpc_id(sender_id, 0, "Usage: /changemap [map_name]")
+			
 		"/endgame":
 			print("Player ", sender_id, " forced endgame in lobby: ", lobby_id)
 			# Emit the signal globally, passing the specific lobby that needs to end

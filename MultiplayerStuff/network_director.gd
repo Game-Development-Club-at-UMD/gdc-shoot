@@ -5,6 +5,7 @@ extends Node
 @onready var btn_csdev: Button = $JoinScreen/Panel/Button
 @onready var btn_local: Button = $JoinScreen/Panel/Button2
 @onready var gamertag_edit: LineEdit = $JoinScreen/Panel/GamerTagEdit
+@onready var ipenter: LineEdit = $JoinScreen/Panel/ipenter
 
 const QUIRKY_PREFIXES = [
 	"Lagging", "Sweaty", "Caffeinated", "Salty", "Chaotic", 
@@ -61,3 +62,12 @@ func _setup_client(ip: String, gamertag: String):
 	client_logic.set_meta("gamertag", gamertag) 
 	
 	add_child(client_logic)
+
+func _on_custom_ip_button_pressed() -> void:
+	var custom_ip = ipenter.text.strip_edges()
+	
+	if custom_ip == "": return
+		
+	var final_name = _get_or_generate_gamertag()
+	join_screen.hide()
+	_setup_client(custom_ip, final_name)

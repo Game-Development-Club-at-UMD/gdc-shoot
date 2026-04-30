@@ -29,7 +29,8 @@ func _create_tracer_effect(global_start: Vector3, global_end: Vector3) -> void:
 
 	# 2. ADD TO CURRENT SCENE
 	# Always add 3D objects to the current_scene, not the root Window.
-	get_tree().current_scene.add_child(mesh_instance)
+	if get_tree():
+		get_tree().current_scene.add_child(mesh_instance)
 
 	# --- POSITION AND ROTATE ---
 	# Put the center of the mesh halfway between the gun and the impact point

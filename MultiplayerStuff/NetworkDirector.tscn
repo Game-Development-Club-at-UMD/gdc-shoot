@@ -50,19 +50,45 @@ grow_vertical = 2
 
 [node name="Button" type="Button" parent="JoinScreen/Panel" unique_id=458934527]
 layout_mode = 0
-offset_left = 557.0
-offset_top = 440.0
-offset_right = 765.0
-offset_bottom = 480.0
+offset_left = 544.0
+offset_top = 553.0
+offset_right = 752.0
+offset_bottom = 593.0
 text = "Join CSDEV03"
 
 [node name="Button2" type="Button" parent="JoinScreen/Panel" unique_id=1832555627]
 layout_mode = 0
-offset_left = 557.0
-offset_top = 499.0
-offset_right = 765.0
-offset_bottom = 539.0
+offset_left = 544.0
+offset_top = 612.0
+offset_right = 752.0
+offset_bottom = 652.0
 text = "Join LocalHost"
+
+[node name="CustomIPButton" type="Button" parent="JoinScreen/Panel" unique_id=734775526]
+layout_mode = 0
+offset_left = 545.0
+offset_top = 492.0
+offset_right = 753.0
+offset_bottom = 532.0
+text = "Join Custom IP"
+
+[node name="ipenter" type="LineEdit" parent="JoinScreen/Panel" unique_id=1313153846]
+layout_mode = 0
+offset_left = 771.0
+offset_top = 499.0
+offset_right = 1041.0
+offset_bottom = 524.0
+placeholder_text = "enter ip here"
+alignment = 1
+
+[node name="GamerTagEdit" type="LineEdit" parent="JoinScreen/Panel" unique_id=113088510]
+layout_mode = 0
+offset_left = 511.0
+offset_top = 671.0
+offset_right = 781.0
+offset_bottom = 696.0
+placeholder_text = "Enter Your Gamertag Here"
+alignment = 1
 
 [node name="Title" type="RichTextLabel" parent="JoinScreen/Panel" unique_id=1192964051]
 layout_mode = 0
@@ -123,13 +149,6 @@ Aswath
 Alex the Slave
 "
 
-[node name="GamerTagEdit" type="LineEdit" parent="JoinScreen/Panel" unique_id=113088510]
-layout_mode = 0
-offset_left = 524.0
-offset_top = 558.0
-offset_right = 794.0
-offset_bottom = 583.0
-placeholder_text = "Enter Your Gamertag Here"
-alignment = 1
+[connection signal="pressed" from="JoinScreen/Panel/CustomIPButton" to="." method="_on_custom_ip_button_pressed"]
 
 [editable path="LobbyContainer"]

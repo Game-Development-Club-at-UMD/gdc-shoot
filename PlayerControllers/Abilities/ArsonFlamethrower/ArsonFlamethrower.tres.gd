@@ -184,8 +184,9 @@ func spawn_rpc_flame_puffs(starting_pos, velocity, ID, nametoset):
 	var puff = FT_PARTICLE.instantiate()
 	puff.set_multiplayer_authority(ID)
 	puff.name = nametoset
-	get_tree().root.add_child(puff)
-	#puff.global_position = starting_pos
+	if get_tree():
+		get_tree().root.add_child(puff)
+	#puff.global_position = starting_`pos
 	puff.global_position = barrel_exit.global_position
 	puff.velocity = velocity
 	#print("I'm the others: " + puff.name)

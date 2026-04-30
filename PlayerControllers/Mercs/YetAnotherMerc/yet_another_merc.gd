@@ -17,7 +17,7 @@ func money_custom_ready() -> void:
 			(cur as RayCast3D).set_exclude_parent_body(true)
 			(cur as RayCast3D).add_exception(self)
 			#self.add_collision_exception_with(cur)
-
+	
 	for ability in self.abilities:
 		if !ability.is_in_group(MoneyAbility.GROUP_NAME): continue
 		ability.equipped.connect(
