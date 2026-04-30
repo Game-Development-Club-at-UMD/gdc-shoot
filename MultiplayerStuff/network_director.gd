@@ -6,6 +6,7 @@ extends Node
 @onready var btn_local: Button = $JoinScreen/Panel/Button2
 @onready var gamertag_edit: LineEdit = $JoinScreen/Panel/GamerTagEdit
 @onready var ipenter: LineEdit = $JoinScreen/Panel/ipenter
+const SETTINGS_PATH = "user://multiplayer_settings.cfg"
 
 const QUIRKY_PREFIXES = [
 	"Lagging", "Sweaty", "Caffeinated", "Salty", "Chaotic", 
@@ -13,6 +14,7 @@ const QUIRKY_PREFIXES = [
 ]
 
 func _ready() -> void:
+	_load_settings()
 	if OS.has_feature("server") or "--server" in OS.get_cmdline_args():
 		join_screen.hide() # Hide the UI on the server
 		_setup_server()
@@ -35,14 +37,26 @@ func _get_or_generate_gamertag() -> String:
 	return "%s%d" % [random_quirk, random_digits]
 
 func _on_join_csdev_pressed() -> void:
+	_save_settings()
 	var final_name = _get_or_generate_gamertag()
 	join_screen.hide()
 	_setup_client("csdev03.d.umn.edu", final_name)
 
 func _on_join_local_pressed() -> void:
+	_save_settings()
 	var final_name = _get_or_generate_gamertag()
 	join_screen.hide()
 	_setup_client("127.0.0.1", final_name)
+
+func _on_custom_ip_button_pressed() -> void:
+	_save_settings()
+	var custom_ip = ipenter.text.strip_edges()
+	
+	if custom_ip == "": return
+		
+	var final_name = _get_or_generate_gamertag()
+	join_screen.hide()
+	_setup_client(custom_ip, final_name)
 
 func _setup_server():
 	get_window().position.x -= ceil(get_window().size.x / 2.0 + 8)
@@ -63,11 +77,22 @@ func _setup_client(ip: String, gamertag: String):
 	
 	add_child(client_logic)
 
-func _on_custom_ip_button_pressed() -> void:
-	var custom_ip = ipenter.text.strip_edges()
+
+func _load_settings() -> void:
+	var config = ConfigFile.new()
 	
-	if custom_ip == "": return
-		
-	var final_name = _get_or_generate_gamertag()
-	join_screen.hide()
-	_setup_client(custom_ip, final_name)
+	# If the file loads successfully, populate the LineEdits
+	if config.load(SETTINGS_PATH) == OK:
+		# The 3rd argument is a default fallback if the key doesn't exist yet
+		gamertag_edit.text = config.get_value("Network", "gamertag", "")
+		ipenter.text = config.get_value("Network", "last_ip", "")
+
+func _save_settings() -> void:
+	var config = ConfigFile.new()
+	
+	# Store whatever is currently in the text boxes
+	config.set_value("Network", "gamertag", gamertag_edit.text.strip_edges())
+	config.set_value("Network", "last_ip", ipenter.text.strip_edges())
+	
+	# Save it to the hard drive
+	config.save(SETTINGS_PATH)

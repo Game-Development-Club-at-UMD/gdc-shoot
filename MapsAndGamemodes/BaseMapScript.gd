@@ -1,5 +1,6 @@
 @abstract
-class_name Map extends Node3D
+class_name Map
+extends Node3D
 #DO NOT EDIT THIS CODE
 signal map_ready # The signal the Lobby is waiting for
 
