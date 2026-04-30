@@ -192,7 +192,7 @@ layout_mode = 0
 offset_left = 263.0
 offset_top = 355.0
 offset_right = 636.0
-offset_bottom = 512.0
+offset_bottom = 536.0
 theme_override_colors/default_color = Color(0.5039348, 0.77575725, 0.6110267, 1)
 theme_override_fonts/normal_font = ExtResource("4_kgyih")
 theme_override_fonts/bold_font = ExtResource("5_qlpsn")
@@ -207,7 +207,7 @@ Right click to wave
 Esc to open menu
 M to change your character(if gamemode permits)
 N to change your team(if gamemode permits)
-"
+K to murder your own merc >:)"
 
 [node name="Chat" type="Control" parent="." unique_id=1833918700]
 layout_mode = 1

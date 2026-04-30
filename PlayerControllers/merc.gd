@@ -259,6 +259,8 @@ func _physics_process(delta: float) -> void:
 	if ClientUI.chat_input.text == "" and can_move:
 		input.x = float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A))
 		input.y = float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W))
+		if Input.is_action_just_pressed("kill"):
+			take_damage(99999999)
 	
 	input = input.normalized()
 	
