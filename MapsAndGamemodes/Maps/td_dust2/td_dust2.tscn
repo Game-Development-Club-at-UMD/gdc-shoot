@@ -1432,6 +1432,7 @@ script = ExtResource("1_gtoa2")
 red_spawn_points = [NodePath("Marker3D"), NodePath("Marker3D2"), NodePath("Marker3D3"), NodePath("Marker3D4"), NodePath("Marker3D5")]
 blue_spawn_points = [NodePath("Marker3D6"), NodePath("Marker3D7"), NodePath("Marker3D8"), NodePath("Marker3D9"), NodePath("Marker3D10")]
 gamemode_length = 450.0
+map_name = "td_dust2"
 metadata/_custom_type_script = "uid://y7ymi8ye40xo"
 
 [node name="Sketchfab_model" type="Node3D" parent="." unique_id=316304161]
