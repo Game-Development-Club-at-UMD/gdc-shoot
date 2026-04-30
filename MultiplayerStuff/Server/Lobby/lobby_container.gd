@@ -37,6 +37,8 @@ func _setup_map_dropdown() -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func create_new_lobby(desired_lobby_id: String, players_in_lobby: Array[int], selected_map : String):
 	if multiplayer.is_server():
+		if lobbies.size() >= 2: return
+		
 		# Grab the index on the server BEFORE adding the new lobby to the dictionary
 		var final_lobby_id = desired_lobby_id.validate_node_name()
 		var base_name = final_lobby_id
@@ -226,6 +228,7 @@ func wake_up_lobby(lobby_id: String):
 
 func _on_create_lobby_button_pressed() -> void:
 	if !multiplayer.is_server():
+		
 		var array_of_player :Array[int] = []
 		
 		var selected_map = map_dropdown.get_item_text(map_dropdown.selected)
